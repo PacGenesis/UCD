@@ -1,0 +1,32 @@
+{
+	"security": {
+		"read": true,
+		"write": true
+	},
+	"id": "30e2277a-43b6-4fc2-bb98-909c181e313c",
+	"name": "controlm_cli",
+	"active": true,
+	"licensed": false,
+	"licenseType": "NONE",
+	"status": "ONLINE",
+	"version": "6.0.1.0.484608",
+	"workingDirectory": "c:\\ibm\\ud-agent\\var\\work\\",
+	"impersonationPassword": "****",
+	"impersonationForce": false,
+	"tags": [],
+	"propSheet": {
+		"id": "2de55683-8816-46aa-80fc-a01a38993962",
+		"path": "agents\/30e2277a-43b6-4fc2-bb98-909c181e313c\/propSheet",
+		"version": 9,
+		"versionCount": 9,
+		"commit": 854,
+		"versioned": true
+	},
+	"extendedSecurity": {
+		"read": true,
+		"write": true,
+		"Edit Agents": true,
+		"View Agents": true,
+		"teams": []
+	}
+}

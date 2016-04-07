@@ -1,0 +1,170 @@
+{
+	"application": {
+		"security": {
+			"read": true,
+			"write": true
+		},
+		"id": "fae6e19c-ff37-4326-8b82-a2cf19f5455c",
+		"name": "Nexus ERM",
+		"description": "",
+		"created": 1393342166211,
+		"enforceCompleteSnapshots": false,
+		"active": true,
+		"tags": [],
+		"user": "admin"
+	},
+	"id": "29e30cc7-6f2a-4a91-819a-fcbf338e5c10",
+	"name": "Deploy ERM",
+	"description": "",
+	"active": true,
+	"inventoryManagementType": "AUTOMATIC",
+	"offlineAgentHandling": "PRE_EXECUTION_CHECK",
+	"versionCount": 8,
+	"version": 8,
+	"commit": 549,
+	"path": "applications\/fae6e19c-ff37-4326-8b82-a2cf19f5455c\/processes\/29e30cc7-6f2a-4a91-819a-fcbf338e5c10",
+	"propDefs": [],
+	"unfilledProperties": [],
+	"rootActivity": {
+		"edges": [{
+			"to": "210690cd95febabe395e5a0b30a108",
+			"type": "ALWAYS",
+			"value": ""
+		},
+		{
+			"to": "3d8aee12bb75f98508b521d86c9766",
+			"from": "210690cd95febabe395e5a0b30a108",
+			"type": "SUCCESS",
+			"value": ""
+		}],
+		"offsets": [{
+			"name": "3d8aee12bb75f98508b521d86c9766",
+			"x": 0,
+			"y": 420
+		},
+		{
+			"name": "210690cd95febabe395e5a0b30a108",
+			"x": -19.5,
+			"y": 196
+		}],
+		"type": "graph",
+		"id": "dcbbab5a-183c-462f-a119-a6e0df8f373f",
+		"name": "3f758197-f2b1-4c57-9226-3dccffc3fbb2",
+		"children": [{
+			"type": "finish",
+			"id": "56f1a159-bc17-4821-9372-af88881ad13f",
+			"name": "3d8aee12bb75f98508b521d86c9766",
+			"children": []
+		},
+		{
+			"componentName": "Nexus ERM",
+			"component": {
+				"id": "3fcf02f9-2e55-4b9d-b7f3-ba9e08b57d6b",
+				"name": "Nexus ERM",
+				"description": "Main web site for Nexus",
+				"created": 1393353433200,
+				"importAutomatically": false,
+				"useVfs": true,
+				"active": true,
+				"deleted": false,
+				"defaultVersionType": "FULL",
+				"cleanupDaysToKeep": 0,
+				"cleanupCountToKeep": 0,
+				"tags": [],
+				"user": "admin"
+			},
+			"runOnlyOnFirst": false,
+			"failFast": false,
+			"maxIteration": -1,
+			"type": "componentEnvironmentIterator",
+			"id": "0891e985-40ca-46dc-afe5-468dadd9d991",
+			"name": "210690cd95febabe395e5a0b30a108",
+			"children": [{
+				"componentName": "Nexus ERM",
+				"component": {
+					"id": "3fcf02f9-2e55-4b9d-b7f3-ba9e08b57d6b",
+					"name": "Nexus ERM",
+					"description": "Main web site for Nexus",
+					"created": 1393353433200,
+					"importAutomatically": false,
+					"useVfs": true,
+					"active": true,
+					"deleted": false,
+					"defaultVersionType": "FULL",
+					"cleanupDaysToKeep": 0,
+					"cleanupCountToKeep": 0,
+					"tags": [],
+					"user": "admin"
+				},
+				"type": "allVersionsIterator",
+				"id": "5af345b1-5580-49c6-a595-e5952a46552d",
+				"name": "fa1348aa7f58d21750633d475f169a",
+				"children": [{
+					"componentProcessName": "Deploy ERM Main",
+					"componentProcess": {
+						"id": "edec9a82-9df1-4480-919d-0e7afc696671",
+						"name": "Deploy ERM Main",
+						"description": "",
+						"defaultWorkingDir": "${p:resource\/work.dir}\/${p:component.name}",
+						"takesVersion": true,
+						"inventoryActionType": "ADD",
+						"status": "Active",
+						"configActionType": "ADD",
+						"active": true,
+						"versionCount": 98,
+						"version": 98,
+						"commit": 732,
+						"path": "components\/3fcf02f9-2e55-4b9d-b7f3-ba9e08b57d6b\/processes\/edec9a82-9df1-4480-919d-0e7afc696671",
+						"unfilledProperties": []
+					},
+					"componentName": "Nexus ERM",
+					"component": {
+						"security": {
+							"read": true,
+							"write": true
+						},
+						"id": "3fcf02f9-2e55-4b9d-b7f3-ba9e08b57d6b",
+						"name": "Nexus ERM",
+						"description": "Main web site for Nexus",
+						"created": 1393353433200,
+						"importAutomatically": false,
+						"useVfs": true,
+						"active": true,
+						"deleted": false,
+						"defaultVersionType": "FULL",
+						"cleanupDaysToKeep": 0,
+						"cleanupCountToKeep": 0,
+						"tags": [],
+						"user": "admin"
+					},
+					"allowFailure": false,
+					"unfilledProperties": [],
+					"properties": {
+						
+					},
+					"type": "componentProcess",
+					"id": "ac0958a9-c215-4b44-98b4-08eb380ad1cb",
+					"name": "deploy erm",
+					"children": []
+				}]
+			}]
+		}]
+	},
+	"componentsTakingVersions": [{
+		"id": "3fcf02f9-2e55-4b9d-b7f3-ba9e08b57d6b",
+		"name": "Nexus ERM",
+		"description": "Main web site for Nexus",
+		"created": 1393353433200,
+		"importAutomatically": false,
+		"useVfs": true,
+		"active": true,
+		"deleted": false,
+		"defaultVersionType": "FULL",
+		"cleanupDaysToKeep": 0,
+		"cleanupCountToKeep": 0,
+		"tags": [],
+		"user": "admin",
+		"roles": [null]
+	}],
+	"versionPresets": []
+}

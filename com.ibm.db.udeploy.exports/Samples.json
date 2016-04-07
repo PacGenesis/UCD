@@ -1,0 +1,474 @@
+{
+    "name": "Samples",
+    "description": "",
+    "enforceCompleteSnapshots": false,
+    "propSheet": {"properties": []},
+    "notificationSchemeName": "Default Notification Scheme",
+    "components": [{
+        "name": "DB Control-M Samples",
+        "description": "",
+        "created": 1395236128639,
+        "importAutomatically": true,
+        "useVfs": true,
+        "active": true,
+        "deleted": false,
+        "defaultVersionType": "FULL",
+        "cleanupDaysToKeep": 0,
+        "cleanupCountToKeep": 0,
+        "componentTemplate": {
+            "path": "componentTemplates\/60b81f81-863a-484b-8b74-a957d1a3a278",
+            "name": "DB Control-M",
+            "description": "DB Control-M Template",
+            "active": true,
+            "envPropDefs": [],
+            "propDefs": [],
+            "properties": [],
+            "processes": [{
+                "name": "Deploy Job Changes",
+                "description": "",
+                "defaultWorkingDir": "${p:resource\/work.dir}\/${p:component.name}",
+                "takesVersion": true,
+                "inventoryActionType": "ADD",
+                "status": "Active",
+                "configActionType": "ADD",
+                "active": true,
+                "path": "componentTemplates\/60b81f81-863a-484b-8b74-a957d1a3a278\/processes\/ee33a9b4-6279-4af4-a96d-7f8d144f9095",
+                "propDefs": [],
+                "rootActivity": {
+                    "edges": [
+                        {
+                            "to": "Unzip Control M Zip",
+                            "from": "Download Artifacts",
+                            "type": "SUCCESS",
+                            "value": ""
+                        },
+                        {
+                            "to": "Download Artifacts",
+                            "from": "Delete Files and Directories",
+                            "type": "SUCCESS",
+                            "value": ""
+                        },
+                        {
+                            "to": "0a0d6b51923bc3383b5dfc0cd33915",
+                            "from": "Update Control-M Definition",
+                            "type": "SUCCESS",
+                            "value": ""
+                        },
+                        {
+                            "to": "Update Control-M Definition",
+                            "from": "Unzip Control M Zip",
+                            "type": "SUCCESS",
+                            "value": ""
+                        },
+                        {
+                            "to": "Delete Files and Directories",
+                            "type": "ALWAYS",
+                            "value": ""
+                        }
+                    ],
+                    "offsets": [
+                        {
+                            "name": "Download Artifacts",
+                            "x": -70,
+                            "y": 100,
+                            "h": 60,
+                            "w": 220
+                        },
+                        {
+                            "name": "Delete Files and Directories",
+                            "x": -392.5,
+                            "y": 40,
+                            "h": 60,
+                            "w": 260
+                        },
+                        {
+                            "name": "Update Control-M Definition",
+                            "x": -70,
+                            "y": 323,
+                            "h": 60,
+                            "w": 220
+                        },
+                        {
+                            "name": "0a0d6b51923bc3383b5dfc0cd33915",
+                            "x": 0,
+                            "y": 430,
+                            "h": 50,
+                            "w": 80
+                        },
+                        {
+                            "name": "Unzip Control M Zip",
+                            "x": -50,
+                            "y": 220,
+                            "h": 60,
+                            "w": 180
+                        }
+                    ],
+                    "type": "graph",
+                    "name": "d35bc31b-4e7b-47d3-aad3-d42ba586f078",
+                    "children": [
+                        {
+                            "type": "finish",
+                            "name": "0a0d6b51923bc3383b5dfc0cd33915",
+                            "children": []
+                        },
+                        {
+                            "allowFailure": false,
+                            "useImpersonation": false,
+                            "showHidden": false,
+                            "impersonationUseSudo": false,
+                            "commandName": "Download Artifacts",
+                            "pluginName": "IBM UrbanCode Deploy Versioned File Storage",
+                            "pluginVersion": 18,
+                            "properties": {
+                                "directoryOffset": ".",
+                                "artifactSetBaseDir": "",
+                                "fileIncludePatterns": "**\/*",
+                                "fileExcludePatterns": "",
+                                "syncMode": "true",
+                                "fullVerification": "true",
+                                "setFileExecuteBits": "false",
+                                "verifyFileIntegrity": "false",
+                                "repositoryUrl": "${p:server.url}\/vfs",
+                                "repositoryId": "${p:component\/code_station\/repository}",
+                                "label": "${p:version.name}",
+                                "serverUrl": "${p:server.url}",
+                                "compId": "${p:component.id}",
+                                "resId": "${p:resource.id}",
+                                "charset": ""
+                            },
+                            "type": "plugin",
+                            "name": "Download Artifacts",
+                            "children": []
+                        },
+                        {
+                            "allowFailure": false,
+                            "useImpersonation": false,
+                            "showHidden": false,
+                            "impersonationUseSudo": false,
+                            "commandName": "Unzip",
+                            "pluginName": "File Utils",
+                            "pluginVersion": 31,
+                            "properties": {
+                                "dir": "",
+                                "zip": "*.zip",
+                                "includes": "**\/*",
+                                "excludes": "",
+                                "overwrite": "false"
+                            },
+                            "type": "plugin",
+                            "name": "Unzip Control M Zip",
+                            "children": []
+                        },
+                        {
+                            "allowFailure": false,
+                            "useImpersonation": false,
+                            "showHidden": false,
+                            "impersonationUseSudo": false,
+                            "commandName": "Update Definition",
+                            "pluginName": "DB Control-M",
+                            "pluginVersion": 1,
+                            "properties": {
+                                "userName": "${p:environment\/controlm.username}",
+                                "password": "${p:environment\/controlm.password}",
+                                "serverName": "${p:environment\/controlm.server.name}",
+                                "directoryOffest": ".",
+                                "cmdName": "emdef"
+                            },
+                            "type": "plugin",
+                            "name": "Update Control-M Definition",
+                            "children": []
+                        },
+                        {
+                            "allowFailure": true,
+                            "useImpersonation": false,
+                            "showHidden": false,
+                            "impersonationUseSudo": false,
+                            "commandName": "Delete Files and Directories",
+                            "pluginName": "File Utils",
+                            "pluginVersion": 31,
+                            "properties": {
+                                "baseDir": ".",
+                                "includes": "**\/*",
+                                "excludes": "",
+                                "followSymlinks": "false",
+                                "caseSensitive": "true"
+                            },
+                            "type": "plugin",
+                            "name": "Delete Files and Directories",
+                            "children": []
+                        }
+                    ]
+                }
+            }],
+            "genericProcesses": []
+        },
+        "sourceConfigPluginName": "ControlM Zip File (Versioned)",
+        "envPropDefs": [],
+        "versionPropDefs": [],
+        "propSheetGroup": {"propSheets": [
+            {
+                "name": "FileSystemVersionedComponentProperties",
+                "properties": [
+                    {
+                        "name": "basePath",
+                        "value": "C:\\builds\\controlm",
+                        "description": "",
+                        "secure": false
+                    },
+                    {
+                        "name": "controlMApplicationName",
+                        "value": "Samples",
+                        "description": "",
+                        "secure": false
+                    }
+                ]
+            },
+            {
+                "name": "custom",
+                "properties": []
+            },
+            {
+                "name": "code_station",
+                "properties": [{
+                    "name": "repository",
+                    "value": "270462a6-0cf4-4b68-a376-155f6136b4db",
+                    "description": "",
+                    "secure": false
+                }]
+            },
+            {
+                "name": "template",
+                "properties": []
+            }
+        ]},
+        "processes": [],
+        "configTemplates": [],
+        "genericProcesses": []
+    }],
+    "environments": [{
+        "name": "DEV",
+        "description": "",
+        "color": "#ffffff",
+        "requireApprovals": false,
+        "exemptProcesses": [],
+        "cleanupDaysToKeep": 0,
+        "cleanupCountToKeep": 0,
+        "order": 0,
+        "active": true,
+        "propSheet": {"properties": [
+            {
+                "name": "controlm.password",
+                "value": "Booboo11",
+                "description": "",
+                "secure": false
+            },
+            {
+                "name": "controlm.server.name",
+                "value": "local",
+                "description": "",
+                "secure": false
+            },
+            {
+                "name": "controlm.username",
+                "value": "emuser",
+                "description": "",
+                "secure": false
+            }
+        ]},
+        "baseResources": [
+            {
+                "path": "\/cm_dev",
+                "id": "57fc12c8-20a9-4510-99c2-ed334526444e"
+            },
+            {
+                "path": "\/cm_dev\/controlm_cli\/DB Control-M Samples",
+                "id": "2a39f152-15df-49db-8eee-6519c34a502c"
+            }
+        ],
+        "componentPropSheets": [{
+            "properties": [],
+            "componentName": "DB Control-M Samples"
+        }],
+        "versionConditions": []
+    }],
+    "processes": [{
+        "name": "Deploy Job Definition",
+        "description": "",
+        "inventoryManagementType": "AUTOMATIC",
+        "offlineAgentHandling": "PRE_EXECUTION_CHECK",
+        "rootActivity": {
+            "edges": [
+                {
+                    "to": "Validate GCM",
+                    "type": "ALWAYS",
+                    "value": ""
+                },
+                {
+                    "to": "2f8b3efc89223ad04de9fd37ca01e4",
+                    "from": "712a04dd63d65ca0e36d9d56a190c3",
+                    "type": "SUCCESS",
+                    "value": ""
+                },
+                {
+                    "to": "712a04dd63d65ca0e36d9d56a190c3",
+                    "from": "Validate GCM",
+                    "type": "SUCCESS",
+                    "value": ""
+                }
+            ],
+            "offsets": [
+                {
+                    "name": "2f8b3efc89223ad04de9fd37ca01e4",
+                    "x": 0,
+                    "y": 420,
+                    "h": 50,
+                    "w": 80
+                },
+                {
+                    "name": "712a04dd63d65ca0e36d9d56a190c3",
+                    "x": -35,
+                    "y": 220,
+                    "h": 40,
+                    "w": 230
+                },
+                {
+                    "name": "Validate GCM",
+                    "x": -227.5,
+                    "y": 107,
+                    "h": 60,
+                    "w": 180
+                }
+            ],
+            "type": "graph",
+            "name": "edf45a69-999e-4553-9d10-becddd3f59e4",
+            "children": [
+                {
+                    "type": "finish",
+                    "name": "2f8b3efc89223ad04de9fd37ca01e4",
+                    "children": []
+                },
+                {
+                    "componentName": "DB Control-M Samples",
+                    "properties": [
+                        {
+                            "name": "failFast",
+                            "value": "false"
+                        },
+                        {
+                            "name": "runOnlyOnFirst",
+                            "value": "false"
+                        },
+                        {
+                            "name": "maxIteration",
+                            "value": "-1"
+                        }
+                    ],
+                    "type": "componentEnvironmentIterator",
+                    "name": "712a04dd63d65ca0e36d9d56a190c3",
+                    "children": [{
+                        "componentName": "DB Control-M Samples",
+                        "status": "Active",
+                        "type": "inventoryVersionDiff",
+                        "name": "f8a075ad-a389-488d-9012-99da8f8f6a39",
+                        "children": [{
+                            "componentTemplateName": "DB Control-M",
+                            "componentProcessName": "Deploy Job Changes",
+                            "allowFailure": false,
+                            "properties": {},
+                            "type": "componentProcess",
+                            "name": "Install DB Control-M Samples",
+                            "children": []
+                        }]
+                    }]
+                },
+                {
+                    "processName": "Validate GCM",
+                    "resourcePath": "${p:resource.path}",
+                    "properties": {},
+                    "type": "runProcess",
+                    "name": "Validate GCM",
+                    "children": []
+                }
+            ]
+        },
+        "propDefs": []
+    }],
+    "genericProcesses": [{
+        "name": "Validate GCM",
+        "description": "",
+        "rootActivity": {
+            "edges": [
+                {
+                    "to": "23171bb9534e5778ddaa68a986bf1f",
+                    "from": "Shell",
+                    "type": "SUCCESS",
+                    "value": ""
+                },
+                {
+                    "to": "Shell",
+                    "type": "ALWAYS",
+                    "value": ""
+                }
+            ],
+            "offsets": [
+                {
+                    "name": "Shell",
+                    "x": 8.5,
+                    "y": 201,
+                    "h": 60,
+                    "w": 130
+                },
+                {
+                    "name": "23171bb9534e5778ddaa68a986bf1f",
+                    "x": 0,
+                    "y": 420,
+                    "h": 50,
+                    "w": 80
+                }
+            ],
+            "type": "graph",
+            "name": "1da7a559-9093-4421-af07-6321f94ad233",
+            "children": [
+                {
+                    "type": "finish",
+                    "name": "23171bb9534e5778ddaa68a986bf1f",
+                    "children": []
+                },
+                {
+                    "allowFailure": false,
+                    "useImpersonation": false,
+                    "showHidden": false,
+                    "impersonationUseSudo": false,
+                    "commandName": "Shell",
+                    "pluginName": "Shell",
+                    "pluginVersion": 3,
+                    "properties": {
+                        "directoryOffset": ".",
+                        "shellInterpreter": "",
+                        "scriptBody": "Echo 'validate GCM'",
+                        "runAsDaemon": "false",
+                        "outputFile": ""
+                    },
+                    "type": "plugin",
+                    "name": "Shell",
+                    "children": []
+                }
+            ]
+        },
+        "properties": [
+            {
+                "name": "contextType",
+                "value": "Resource",
+                "description": "",
+                "secure": false
+            },
+            {
+                "name": "workingDir",
+                "value": "${p:resource\/work.dir}\/${p:process.name}",
+                "description": "",
+                "secure": false
+            }
+        ],
+        "propDefs": []
+    }]
+}

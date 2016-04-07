@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+- Licensed Materials - Property of IBM Corp.
+- IBM UrbanCode Build
+- IBM UrbanCode Deploy
+- IBM UrbanCode Release
+- IBM AnthillPro
+- (c) Copyright IBM Corporation 2002, 2014. All Rights Reserved.
+-
+- U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
+- GSA ADP Schedule Contract with IBM Corp.
+-->
+<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1"
+    xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+  <header>
+    <identifier id="com.urbancode.air.plugin.source.controlmversion" name="ControlM Zip File (Versioned)" version="2"/>
+    <description>
+      The Control-M Versioned plugin uses a controlm zip file nameing convention with file date to create a control version of a component.
+	</description>
+    <tag>ControlM Component Versioned</tag>
+    <server:plugin-type>Source</server:plugin-type>
+  </header>
+  <step-type name="Import Version">
+    <description>Description</description>
+    <properties>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java">
+      <arg value="-jar"/>
+      <arg file="CMREPRun.jar"/>
+      <!-- DEBUG -->
+      <arg value="-f"/>
+       <arg file="UCDImportVersion.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  <!-- ==================================== -->
+  <!--   Properties                         -->
+  <!-- ==================================== -->
+  <server:property-group type="Component" name="FileSystemVersionedComponentProperties">
+    <server:property name="basePath" required="true">
+      <server:property-ui type="textBox"
+                          label="Base Path"
+                          description="Base path for artifact storage" />
+    </server:property>
+    <server:property name="controlMApplicationName" required="true">
+      <server:property-ui type="textBox"
+                          label="Control-M Application Name"
+                          description="A name that should relate to a part of the string protocol." />
+    </server:property>
+  </server:property-group>
+</plugin>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <header>
+    <identifier version="1" id="com.ibm.db.dap.controlm" name="DB Control-M"/>
+    <description>
+    	The DB Control-M plugin interacts with BMC Control-M to integrate with schedule processing.
+      </description>
+    <tag>Scheduling/ControlM</tag>
+  </header>
+   
+  <!-- ==================================== -->
+  <!--   Update Definition				-->
+  <!-- ==================================== -->
+  <step-type name="Update Definition">
+    <description>Call Control-M update definition command</description>
+    <properties>
+      <property name="userName" required="true">
+        <property-ui type="textBox" label="User ID" description="User ID." default-value="${p:environment/controlm.username}"/>
+      </property>
+      <property name="password" required="true">
+        <property-ui type="textBox" label="Password" description="Password" default-value="${p:environment/controlm.password}"/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server name" default-value="${p:environment/controlm.server.name}"/>
+      </property>
+     <property name="directoryOffest" required="true">
+        <property-ui type="textBox" label="Directory Offset" description="Directory Offset" default-value="."/>
+      </property>
+     <property name="cmdName" required="true">
+        <property-ui type="textBox" label="Command Name" description="CommandName" default-value="emdef" hidden="true"/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java">
+      <arg value="-jar"/>
+      <arg file="CMRSRun.jar"/>
+      <!-- DEBUG -->
+      <arg value="-f"/>
+       <arg file="UCDUpdateDefinition.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+ 
+  
+</plugin>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <header>
+    <identifier version="1" id="com.urbancode.air.plugin.GCM" name="GCM"/>
+    <description>GCM plugin fetches the information from the GCM tool and validate the change window and status to proceed with the deployment</description>
+    <tag>GCM</tag>
+  </header>
+  <step-type name="GCM Validate">
+    <description>Cross check the GCM before deployment</description>
+    <properties>
+      <property name="GCMId" required="true">
+        <property-ui type="textBox"
+                     label="GCM Number"
+                     description="GCM Number."/>
+      </property>
+	  
+	<property name="SystemProps" required="true">
+		<property-ui type="textBox" hidden="true" default-value="${p:system/allProperties}" />
+	</property>
+     	  
+	<property name="AppProps" required="true">
+		<property-ui type="textBox" hidden="true"  default-value="${p:application.name}" />
+	</property>
+	  
+	<property name="EnvProps" required="true">
+		<property-ui type="textBox" hidden="true" default-value="${p:environment.name}" />
+	</property>	  
+      
+	<property name="DB_User" required="false">
+	    <property-ui type="textBox"
+                     label="DB User Name" hidden="true"
+                     description="Database user name" 
+					 default-value="${p:system/GCM_db_user_name}"/>
+       </property>
+ <property name="DB_Pwd" required="false">
+        <property-ui type="textBox"
+                     label="DB password"
+                     description="Database password" hidden="true"
+					 default-value="${p:system/GCM_db_pwd}"/>
+      </property>
+ <property name="GCM_db_server_name" required="false">
+        <property-ui type="textBox"
+                     label="GCM DB Server Name"
+                     description="GCM DB Server Name" hidden="true"
+					default-value="${p:system/GCM_db_server_name}" />
+      </property>
+	  <property name="GCM_port" required="false">
+        <property-ui type="textBox"
+                     label="GCM Port"
+                     description="GCM Port " hidden="true"
+					 default-value="${p:system/GCM_db_port_number}"/>
+      </property>
+	  <property name="GCM_db_serviceId" required="false">
+        <property-ui type="textBox"
+                     label="GCM_db_serviceId" hidden="true"
+                     description="Service id to connect to the database"	 
+					 default-value="${p:system/GCM_db_serviceId}"/>
+      </property>
+	  <property name="GCM_requires_validation" required="false">
+        <property-ui type="textBox"
+                     label="Requires Validation" hidden="true"
+                     description="Check to see if environment requires validation"	 
+					 default-value="${p:environment/requires.gcm.validation}"
+					 hidden="true"/>
+      </property>
+
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="lib/ojdbc6.jar:lib/urbancode-vfs-client-all.jar:lib/uDeployRestClient.jar:lib/CommonsFileUtils.jar:lib/CommonsUtil.jar:classes"/>
+      <arg file="GCMValidate.groovy"/>
+	  <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+	  </command>
+  </step-type>
+</plugin>

@@ -1,0 +1,2 @@
+set parms=%*
+echo %parm%

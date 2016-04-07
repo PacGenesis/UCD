@@ -1,0 +1,71 @@
+[{
+	"security": {
+		"read": true,
+		"write": true,
+		"execute": true
+	},
+	"propSheet": {
+		"id": "1346c21d-2903-4a1b-bf65-fb017b99d49d",
+		"path": "applications\/e45333aa-9464-4c41-a325-e357de0c1b62\/environments\/b980d10e-29e2-4c2c-bc5f-88d031f2aeac\/propSheet",
+		"version": 6,
+		"versionCount": 6,
+		"commit": 834,
+		"versioned": true
+	},
+	"application": {
+		"id": "e45333aa-9464-4c41-a325-e357de0c1b62",
+		"name": "[00001]Samples",
+		"description": "",
+		"created": 1395236385514,
+		"enforceCompleteSnapshots": false,
+		"active": true,
+		"tags": [],
+		"user": "admin"
+	},
+	"id": "b980d10e-29e2-4c2c-bc5f-88d031f2aeac",
+	"name": "DEV",
+	"description": "",
+	"color": "#ffffff",
+	"requireApprovals": false,
+	"lockSnapshots": false,
+	"calendarId": "1640e3f7-ee29-4896-87d3-b559cac6fb8a",
+	"active": true,
+	"cleanupDaysToKeep": 0,
+	"cleanupCountToKeep": 0,
+	"conditions": []
+},{
+	"security": {
+		"read": true,
+		"write": true,
+		"execute": true
+	},
+	"propSheet": {
+		"id": "a9868f80-c8c0-4928-868b-6a33c4458d40",
+		"path": "applications\/e45333aa-9464-4c41-a325-e357de0c1b62\/environments\/6c12570f-9dab-4339-93ba-80c46ac9e697\/propSheet",
+		"version": 4,
+		"versionCount": 4,
+		"commit": 871,
+		"versioned": true
+	},
+	"application": {
+		"id": "e45333aa-9464-4c41-a325-e357de0c1b62",
+		"name": "[00001]Samples",
+		"description": "",
+		"created": 1395236385514,
+		"enforceCompleteSnapshots": false,
+		"active": true,
+		"tags": [],
+		"user": "admin"
+	},
+	"id": "6c12570f-9dab-4339-93ba-80c46ac9e697",
+	"name": "PROD",
+	"description": "",
+	"color": "#d3d3d3",
+	"requireApprovals": false,
+	"lockSnapshots": false,
+	"calendarId": "a9a4f55c-4bec-4a6f-930e-81ebbd4b47c4",
+	"active": true,
+	"cleanupDaysToKeep": 0,
+	"cleanupCountToKeep": 0,
+	"conditions": []
+}]

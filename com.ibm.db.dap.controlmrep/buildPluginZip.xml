@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_debug_deploy_zip" name="Create Runnable Jar for Project com.ibm.db.dap.controlm">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+	<property file="build.properties" />
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_debug_run_jar">
+        <jar destfile="../../build/CMREPRun.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.wst.jsdt.debug.rhino.debugger.shell.DebugMain"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="./bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="./lib/js.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./lib/org.eclipse.wst.jsdt.debug.rhino.debugger_1.0.301.v201208171701.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./lib/org.eclipse.wst.jsdt.debug.transport_1.0.101.v201208171701.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./lib/udclient.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./lib/UDeployRestClient.jar"/>
+            </jar>
+    </target>
+	
+	<target name="create_debug_deploy_zip" depends="create_debug_run_jar">
+		 <delete file="../../build/DAP_ControlM_Rep_1.zip"/>
+		 <delete file="../../build/plugin.xml"/>
+		 		<tstamp>
+		    <format property="date.build_id" pattern="yyMMddHHmm" />
+		</tstamp>
+			<!--
+		-->
+		<copy file="plugin.xml" tofile="../../build/plugin.xml"/>
+		<replace file="../../build/plugin.xml" token="${debug.token}" value="${debug.statement}"/>
+		<zip destFile="../../build/DAP_ControlM_Rep_1.zip">
+			<fileset dir="./">
+    			<include name="*.xml"/>
+				<include name="**/*.js"/>
+				<include name="*.bat"/>
+				<exclude name="plugin.xml"/>
+				<exclude name="test/*"/>
+				<exclude name="*.xlsx"/>
+			</fileset>
+			<fileset dir="../../build/">
+    			<include name="CMREPRun.jar"/>
+			</fileset>
+			<fileset dir="../../build/">
+    			<include name="plugin.xml"/>
+			</fileset>
+			
+		</zip>
+	</target>
+	<target name="create_deploy_zip" depends="create_debug_run_jar">
+		 <delete file="${prod.build.dir}/DAP_ControlM_Rep_1.zip"/>
+		<tstamp>
+		    <format property="date.build_id" pattern="yyMMddHHmm" />
+		</tstamp>
+			<!--
+		<copy file="plugin.txt" tofile="plugin.xml"/>
+		<replace file="./plugin.xml" token="@@@@" value="${date.build_id}"/>
+		-->
+		<zip destFile="${prod.build.dir}/DAP_ControlM_Rep_1.zip">
+			<fileset dir="./">
+    			<include name="*.xml"/>
+				<include name="**/*.js"/>
+				<include name="*.bat"/>
+				<exclude name="test/*"/>
+				<exclude name="*.xlsx"/>
+			</fileset>
+			<fileset dir="../../build">
+    			<include name="CMREPRun.jar"/>
+			</fileset>
+ 
+		</zip>
+	</target>
+</project>

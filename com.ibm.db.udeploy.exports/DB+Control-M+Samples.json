@@ -1,0 +1,241 @@
+{
+    "name": "DB Control-M Samples",
+    "description": "",
+    "created": 1395236128639,
+    "importAutomatically": true,
+    "useVfs": true,
+    "active": true,
+    "deleted": false,
+    "defaultVersionType": "FULL",
+    "cleanupDaysToKeep": 0,
+    "cleanupCountToKeep": 0,
+    "componentTemplate": {
+        "path": "componentTemplates\/60b81f81-863a-484b-8b74-a957d1a3a278",
+        "name": "DB Control-M",
+        "description": "DB Control-M Template",
+        "active": true,
+        "envPropDefs": [],
+        "propDefs": [],
+        "properties": [],
+        "processes": [{
+            "name": "Deploy Job Changes",
+            "description": "",
+            "defaultWorkingDir": "${p:resource\/work.dir}\/${p:component.name}",
+            "takesVersion": true,
+            "inventoryActionType": "ADD",
+            "status": "Active",
+            "configActionType": "ADD",
+            "active": true,
+            "path": "componentTemplates\/60b81f81-863a-484b-8b74-a957d1a3a278\/processes\/ee33a9b4-6279-4af4-a96d-7f8d144f9095",
+            "propDefs": [],
+            "rootActivity": {
+                "edges": [
+                    {
+                        "to": "Unzip Control M Zip",
+                        "from": "Download Artifacts",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Download Artifacts",
+                        "from": "Delete Files and Directories",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "0a0d6b51923bc3383b5dfc0cd33915",
+                        "from": "Update Control-M Definition",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Update Control-M Definition",
+                        "from": "Unzip Control M Zip",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Delete Files and Directories",
+                        "type": "ALWAYS",
+                        "value": ""
+                    }
+                ],
+                "offsets": [
+                    {
+                        "name": "Download Artifacts",
+                        "x": -70,
+                        "y": 100,
+                        "h": 60,
+                        "w": 220
+                    },
+                    {
+                        "name": "Delete Files and Directories",
+                        "x": -392.5,
+                        "y": 40,
+                        "h": 60,
+                        "w": 260
+                    },
+                    {
+                        "name": "Update Control-M Definition",
+                        "x": -70,
+                        "y": 323,
+                        "h": 60,
+                        "w": 220
+                    },
+                    {
+                        "name": "0a0d6b51923bc3383b5dfc0cd33915",
+                        "x": 0,
+                        "y": 430,
+                        "h": 50,
+                        "w": 80
+                    },
+                    {
+                        "name": "Unzip Control M Zip",
+                        "x": -50,
+                        "y": 220,
+                        "h": 60,
+                        "w": 180
+                    }
+                ],
+                "type": "graph",
+                "name": "d35bc31b-4e7b-47d3-aad3-d42ba586f078",
+                "children": [
+                    {
+                        "type": "finish",
+                        "name": "0a0d6b51923bc3383b5dfc0cd33915",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Download Artifacts",
+                        "pluginName": "IBM UrbanCode Deploy Versioned File Storage",
+                        "pluginVersion": 18,
+                        "properties": {
+                            "directoryOffset": ".",
+                            "artifactSetBaseDir": "",
+                            "fileIncludePatterns": "**\/*",
+                            "fileExcludePatterns": "",
+                            "syncMode": "true",
+                            "fullVerification": "true",
+                            "setFileExecuteBits": "false",
+                            "verifyFileIntegrity": "false",
+                            "repositoryUrl": "${p:server.url}\/vfs",
+                            "repositoryId": "${p:component\/code_station\/repository}",
+                            "label": "${p:version.name}",
+                            "serverUrl": "${p:server.url}",
+                            "compId": "${p:component.id}",
+                            "resId": "${p:resource.id}",
+                            "charset": ""
+                        },
+                        "type": "plugin",
+                        "name": "Download Artifacts",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Unzip",
+                        "pluginName": "File Utils",
+                        "pluginVersion": 31,
+                        "properties": {
+                            "dir": "",
+                            "zip": "*.zip",
+                            "includes": "**\/*",
+                            "excludes": "",
+                            "overwrite": "false"
+                        },
+                        "type": "plugin",
+                        "name": "Unzip Control M Zip",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Update Definition",
+                        "pluginName": "DB Control-M",
+                        "pluginVersion": 1,
+                        "properties": {
+                            "userName": "${p:environment\/controlm.username}",
+                            "password": "${p:environment\/controlm.password}",
+                            "serverName": "${p:environment\/controlm.server.name}",
+                            "directoryOffest": ".",
+                            "cmdName": "emdef"
+                        },
+                        "type": "plugin",
+                        "name": "Update Control-M Definition",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": true,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Delete Files and Directories",
+                        "pluginName": "File Utils",
+                        "pluginVersion": 31,
+                        "properties": {
+                            "baseDir": ".",
+                            "includes": "**\/*",
+                            "excludes": "",
+                            "followSymlinks": "false",
+                            "caseSensitive": "true"
+                        },
+                        "type": "plugin",
+                        "name": "Delete Files and Directories",
+                        "children": []
+                    }
+                ]
+            }
+        }],
+        "genericProcesses": []
+    },
+    "sourceConfigPluginName": "ControlM Zip File (Versioned)",
+    "envPropDefs": [],
+    "versionPropDefs": [],
+    "propSheetGroup": {"propSheets": [
+        {
+            "name": "custom",
+            "properties": []
+        },
+        {
+            "name": "template",
+            "properties": []
+        },
+        {
+            "name": "code_station",
+            "properties": [{
+                "name": "repository",
+                "value": "270462a6-0cf4-4b68-a376-155f6136b4db",
+                "description": "",
+                "secure": false
+            }]
+        },
+        {
+            "name": "FileSystemVersionedComponentProperties",
+            "properties": [
+                {
+                    "name": "basePath",
+                    "value": "C:\\builds\\controlm",
+                    "description": "",
+                    "secure": false
+                },
+                {
+                    "name": "controlMApplicationName",
+                    "value": "Samples",
+                    "description": "",
+                    "secure": false
+                }
+            ]
+        }
+    ]},
+    "processes": [],
+    "configTemplates": [],
+    "genericProcesses": []
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pluginInfo>
+  <author>
+    <name>UrbanCode</name>
+    <email></email>
+    <website>http://urbancode.com</website>
+  </author>
+  <licenses>
+    <license></license>
+  </licenses>
+  <integrationType>Deploy</integrationType>
+  <categories>
+    <category>GCM</category>
+   <category>REMEDY</category>
+  </categories>
+  <versions>
+    <version name="1">
+	  <releaseNote>This Plugin is to validate the GCM before proceeding with the deployment
+</releaseNote>
+    </version>
+  </versions>
+</pluginInfo>
