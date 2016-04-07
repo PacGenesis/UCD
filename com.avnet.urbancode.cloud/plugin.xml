@@ -1,0 +1,1439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <header>
+    <identifier version="1" id="com.urbancode.air.plugin.rightscale" name="RightScale"/>
+    <description>
+    	The RightScale plugin will provide steps to manage Cloud environments.
+      </description>
+    <tag>Cloud/RightScale</tag>
+  </header>
+   <!-- ==================================== -->
+  <!--   Create Deployment				-->
+  <!-- ==================================== -->
+  <step-type name="Create Deployment">
+    <description>Create a deployment</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="deploymentName" required="true">
+        <property-ui type="textBox" label="Name" description="Deployment name."/>
+      </property>
+      <property name="description" required="false">
+        <property-ui type="textBox" label="Description" description="Deployment detailed outline."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDCreateDeployment.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+   <!-- ==================================== -->
+  <!--   Delete Deployment				-->
+  <!-- ==================================== -->
+  <step-type name="Delete Deployment">
+    <description>Delete a deployment</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="deploymentName" required="true">
+        <property-ui type="textBox" label="Name" description="Deployment name."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDDeleteDeployment.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+   
+  <!-- ==================================== -->
+  <!--   Create Firewall Group				-->
+  <!-- ==================================== -->
+  <step-type name="Create Firewall Group">
+    <description>Create a security group</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="groupName" required="true">
+        <property-ui type="textBox" label="Group Name" description="Security groups name."/>
+      </property>
+      <property name="description" required="false">
+        <property-ui type="textBox" label="Description" description="Environment name."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud to add the Security Group."/>
+      </property>
+      <property name="networkName" required="true">
+        <property-ui type="textBox" label="Network Name" description="The name of an associated network."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDCreateFirewallGroup.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+  <!-- ==================================== -->
+  <!--   Destroy Firewall Group				-->
+  <!-- ==================================== -->
+  <step-type name="Destroy Firewall Group">
+    <description>Destroy a firewall group</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="groupName" required="true">
+        <property-ui type="textBox" label="Group Name" description="Security groups name."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud to add the Security Group."/>
+      </property>
+      <property name="networkName" required="true">
+        <property-ui type="textBox" label="Network Name" description="The name of the network."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDDestroyFirewallGroup.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+ 
+  <!-- ==================================== -->
+  <!--   Add Firewall Group	Rule			-->
+  <!-- ==================================== -->
+  <step-type name="Add Firewall Group Rule">
+    <description>Add a rule to a firewall group.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="RightScale (OAuth) public token. The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+       <property name="ruleName" required="true">
+        <property-ui type="textBox" label="Name" description="The name of the rule. Note! This will be stored in RightScale 'description' field."/>
+      </property>
+       <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud to add the Security Group."/>
+      </property>
+       <property name="groupName" required="true">
+        <property-ui type="textBox" label="Group Name" description="The name of the Security Group to add the Rule."/>
+      </property>
+      <property name="networkName" required="true">
+        <property-ui type="textBox" label="Network Name" description="The name of the network."/>
+      </property>
+      <property name="direction" required="false">
+        <property-ui type="selectBox" label="Direction" description="Direction of traffic."/>
+  		<value label="Inbound">ingress</value>
+  		<value label="Outbound">egress</value>
+      </property>
+      <property name="sourceType" required="true">
+        <property-ui type="selectBox" label="Source Type" description="Defines the source of the security rule.  E.G. cidr_ips or group"/>
+  		<value label="CIDR Block">cidr_ips</value>
+  		<value label="Security Group">group</value>
+      </property>
+      <property name="protocol" required="true">
+        <property-ui type="selectBox" label="Protocol" description="Protocol to filter on."/>
+  		<value label="tcp">tcp</value>
+  		<value label="udp">udp</value>
+  		<value label="icmp">icmp</value>
+  		<value label="all">all</value>
+      </property>
+      <property name="cidrIPS" required="false">
+        <property-ui type="textBox" label="IP Source" description="An IP address range in CIDR notation. Required if source_type is 'cidr_ips'."/>
+      </property>
+     <property name="sourceGroupOwner" required="false">
+        <property-ui type="textBox" label="Source Group Owner" description="Owner of source Security Group. E.G. for EC2 it is the account number of the AWS account.  Required if source_type is 'group'."/>
+      </property>
+     <property name="startPort" required="false">
+        <property-ui type="textBox" label="Start Port" description="Start of port range (inclusive). Required if protocol is 'tcp' or 'udp'."/>
+      </property>
+     <property name="endPort" required="false">
+        <property-ui type="textBox" label="End Port" description="End of port range (inclusive). Required if protocol is 'tcp' or 'udp'."/>
+      </property>
+     <property name="icmpType" required="false">
+        <property-ui type="selectBox" label="ICMP Type" description="ICMP type. Required if protocol is 'icmp'."/>
+  		<value label="-1 - any">-1</value>
+  		<value label="0 - Echo Reply">0</value>
+  		<value label="3 - Destination Unreachable">3</value>
+  		<value label="4 - Source Quench">4</value>
+  		<value label="5 - Redirect">5</value>
+  		<value label="6 - Alternate Host Address">6</value>
+  		<value label="8 - Echo">8</value>
+  		<value label="9 - Router Advertisement">9</value>
+  		<value label="10 - Router Selection">10</value>
+  		<value label="11 - Time Exceeded">11</value>
+  		<value label="12 - Parameter Problem">12</value>
+  		<value label="13 - Timestamp">13</value>
+  		<value label="14 - Timestamp Reply">14</value>
+  		<value label="15 - Information Request">15</value>
+  		<value label="16 - Information Reply">16</value>
+  		<value label="17 - Address Mask Request">17</value>
+  		<value label="18 - Address Mask Reply">18</value>
+  		<value label="40 - Photuris">40</value>
+      </property>
+     <property name="icmpCode" required="false">
+        <property-ui type="selectBox" label="ICMP Code" description="ICMP code. Required if protocol is 'icmp'."/>
+ 		<value label="-1 - any">-1</value>
+ 		<value label="0">0</value>
+ 		<value label="1">1</value>
+ 		<value label="2">2</value>
+ 		<value label="3">3</value>
+ 		<value label="4">4</value>
+ 		<value label="5">5</value>
+ 		<value label="6">6</value>
+ 		<value label="7">7</value>
+ 		<value label="8">8</value>
+ 		<value label="9">9</value>
+ 		<value label="10">10</value>
+ 		<value label="11">11</value>
+ 		<value label="12">12</value>
+ 		<value label="13">13</value>
+ 		<value label="14">14</value>
+ 		<value label="15">15</value>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDAddFirewallRule.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+  <!-- ==================================== -->
+  <!--   Destroy Firewall Rule				-->
+  <!-- ==================================== -->
+  <step-type name="Remove Firewall Rule">
+    <description>Remove a firewall rule</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+       <property name="ruleName" required="true">
+        <property-ui type="textBox" label="Name" description="The name of the rule. Note! This will be stored in RightScale 'description' field."/>
+      </property>
+      <property name="groupName" required="true">
+        <property-ui type="textBox" label="Group Name" description="Security groups name."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud to add the Security Group."/>
+      </property>
+      <property name="networkName" required="true">
+        <property-ui type="textBox" label="Network Name" description="The name of the network."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDDestroyFirewallRule.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+  <!-- ==================================== -->
+  <!--   Create Network				-->
+  <!-- ==================================== -->
+  <step-type name="Create Network">
+    <description>Create a network</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="networkName" required="true">
+        <property-ui type="textBox" label="Network Name" description="Network name."/>
+      </property>
+      <property name="description" required="false">
+        <property-ui type="textBox" label="Description" description="A more verbose outline of network function."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud to add the Security Group."/>
+      </property>
+      <property name="cidrBlock" required="false">
+        <property-ui type="textBox" label="CIDR Block" description="The range of IP addresses for the Network. This parameter is required for Amazon clouds."/>
+      </property>
+      <property name="gatewayName" required="false">
+        <property-ui type="textBox" label="Gateway Name" description="The name of a network gateway that can be associated with this network."/>
+      </property>
+      <property name="instanceTenancy" required="false">
+        <property-ui type="selectBox" label="Instance Tenancy" description="The launch policy for AWS instances in the Network. Specify 'default' to allow instances to decide their own launch policy. Specify 'dedicated' to force all instances to be launched as 'dedicated'."/>
+  		<value label="Default">default</value>
+ 		<value label="Dedicated">dedicated</value>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDCreateNetwork.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  <!-- ==================================== -->
+  <!--   Destroy Network				-->
+  <!-- ==================================== -->
+  <step-type name="Destroy Network">
+    <description>Destroy a network</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="networkName" required="true">
+        <property-ui type="textBox" label="Network Name" description="Network name."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud to add the Security Group."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDDestroyNetwork.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  <!-- ==================================== -->
+  <!--   Create Subnet				-->
+  <!-- ==================================== -->
+  <step-type name="Create Subnet">
+    <description>Create a subnet</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="subnetName" required="true">
+        <property-ui type="textBox" label="Subnet Name" description="Subnet name."/>
+      </property>
+       <property name="description" required="false">
+        <property-ui type="textBox" label="Description" description="A more verbose outline of subnet function."/>
+      </property>
+      <property name="networkName" required="true">
+        <property-ui type="textBox" label="Network Name" description="Network name."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud to add the Security Group."/>
+      </property>
+      <property name="datacenterName" required="false">
+        <property-ui type="textBox" label="Data Center Name" description="The name of the data center."/>
+      </property>
+      <property name="cidrBlock" required="true">
+        <property-ui type="textBox" label="CIDR Block" description="The range of IP addresses for the Network. This parameter is required for Amazon clouds."/>
+      </property>
+      <property name="serverName" required="false">
+        <property-ui type="textBox" label="Server Name" description="The server with a running instance that the subnet will be bound."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDCreateSubnet.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  <!-- ==================================== -->
+  <!--   Destroy Subnet				-->
+  <!-- ==================================== -->
+  <step-type name="Destroy Subnet">
+    <description>Destroy a subnet</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="subnetName" required="true">
+        <property-ui type="textBox" label="Subnet Name" description="Subnet name."/>
+      </property>
+      <property name="networkName" required="true">
+        <property-ui type="textBox" label="Network Name" description="Network name."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud to add the Security Group."/>
+      </property>
+      <property name="serverName" required="false">
+        <property-ui type="textBox" label="Server Name" description="The server with a running instance that the subnet will be bound."/>
+      </property>
+      <property name="datacenterName" required="false">
+        <property-ui type="textBox" label="Data Center Name" description="The name of the data center."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDDestroySubnet.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+  <!-- ==================================== -->
+  <!--   Add Instance to Group				-->
+  <!-- ==================================== -->
+  <step-type name="Add an Instance to a Firewall group">
+    <description>This will take a server and add it to a specific firewall group</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="groupName" required="true">
+        <property-ui type="textBox" label="Group Name" description="Security groups name."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server to add to specific group."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud to add the Security Group."/>
+      </property>
+      <property name="networkName" required="true">
+        <property-ui type="textBox" label="Network Name" description="The name of the network related to the Security Group."/>
+      </property>
+      <property name="subnetName" required="true">
+        <property-ui type="textBox" label="Sub-network Name" description="Sub-network name."/>
+      </property>
+      <property name="blocking" required="false">
+        <property-ui type="checkBox" label="Blocking" description="Check, if you wish to have step wait for instance to update with changes."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDAddServerToFirewallGroup.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+ 
+  
+  <!-- ==================================== -->
+  <!--   Deploy Instance     				-->
+  <!-- ==================================== -->
+  <step-type name="Deploy Instance">
+    <description>This will raise an instance from a specified template.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server to add to specific group."/>
+      </property>
+      <property name="description" required="false">
+        <property-ui type="textBox" label="Description" description="Details of the instance."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud."/>
+      </property>
+      <property name="deploymentName" required="true">
+        <property-ui type="textBox" label="Deployment" description="The name of the deployment."/>
+      </property>
+      <property name="serverTemplateName" required="true">
+        <property-ui type="textBox" label="Server Template" description="The name of the server template."/>
+      </property>
+     <property name="dataCenterName" required="false">
+        <property-ui type="textBox" label="Data Center" description="The name of the data center."/>
+      </property>
+      <property name="networkName" required="false">
+        <property-ui type="textBox" label="Network" description="The name of the network."/>
+      </property>
+      <property name="subnetNames" required="false">
+        <property-ui type="textAreaBox" label="Subnet Names" description="The list of subnet names. Subnet names are separated by a new line in text area"/>
+      </property>
+      <property name="ipAddressName" required="false">
+        <property-ui type="textBox" label="IP Address Name" description="The name of a IP Address to add to server instance."/>
+      </property>
+      
+      <property name="securityGroupName" required="false">
+        <property-ui type="textBox" label="Security Group" description="The name of the security group."/>
+      </property>
+     <property name="multiCloudImageName" required="false">
+        <property-ui type="textBox" label="Multi-cloud Image" description="The name of the multi-cloud image."/>
+      </property>
+     <property name="instanceTypeName" required="false">
+        <property-ui type="textBox" label="Instance Type" description="The name of the instance type."/>
+      </property>
+     <property name="sshKeyName" required="false">
+        <property-ui type="textBox" label="SSH Key Name" description="The name of the ssh key."/>
+      </property>
+     <property name="optimized" required="false">
+        <property-ui type="checkBox" label="Optimized" description="A flag indicating whether Instances of this Server should be optimized for high-performance volumes (e.g. Volumes supporting a specified number of IOPS). Not supported in all Clouds."/>
+      </property>
+     <property name="inputs" required="false">
+        <property-ui type="textAreaBox" label="Inputs" description="Inputs for launching instances.  E.G.  ADMIN_PASSWORD=text:test.  Inputs are separated by a new line in text area. "/>
+      </property>
+     <property name="blocking" required="false">
+        <property-ui type="checkBox" label="Blocking" description="Step will wait for instance to reach 'operational' state."/>
+      </property>
+      <property name="blockToState" required="false">
+        <property-ui type="selectBox" label="Block State" description="The state to reach before blocking stops."/>
+  		<value label="booting">booting</value>
+ 		<value label="operational">operational</value>
+      </property>
+      <property name="blockingTimeout" required="false">
+        <property-ui type="textBox" label="Blocking Timeout (Seconds)" description="Timeout in seconds for blocking."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDDeployInstance.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+  <!-- ==================================== -->
+  <!--   Stop Instance       				-->
+  <!-- ==================================== -->
+  <step-type name="Stop Instance">
+    <description>This will terminate an instance.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server name."/>
+      </property>
+      <property name="blocking" required="false">
+        <property-ui type="checkBox" label="Blocking" description="Check, if you wish to have step wait for state to change to 'terminated'"/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDStopInstance.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+   
+  <!-- ==================================== -->
+  <!--   Start Instance       				-->
+  <!-- ==================================== -->
+  <step-type name="Start Instance">
+    <description>This will start or launch an instance.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server to name."/>
+      </property>
+      <property name="blocking" required="false">
+        <property-ui type="checkBox" label="Blocking" description="Check, if you wish to have step wait for state to change to state defined by 'Block State'"/>
+      </property>
+      <property name="blockToState" required="false">
+        <property-ui type="selectBox" label="Block State" description="The state to reach before blocking stops."/>
+  		<value label="booting">booting</value>
+ 		<value label="operational">operational</value>
+      </property>
+      <property name="bootDelay" required="false">
+        <property-ui type="textBox" label="Boot Delay (seconds)" description="Time in seconds to wait before starting."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDStartInstance.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+   
+  <!-- ==================================== -->
+  <!--   Park Instance       				-->
+  <!-- ==================================== -->
+  <step-type name="Park Instance">
+    <description>This will park an instance.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server name."/>
+      </property>
+      <property name="blocking" required="false">
+        <property-ui type="checkBox" label="Blocking" description="Check, if you wish to have step wait for state to change to 'provisioned'"/>
+      </property>
+      <property name="stopDelay" required="false">
+        <property-ui type="textBox" label="Stop Delay (seconds)" description="Time in seconds to wait before stopping."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDParkInstance.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+   
+  <!-- ==================================== -->
+  <!--   Delete Instance       				-->
+  <!-- ==================================== -->
+  <step-type name="Delete Instance">
+    <description>This will terminate an instance then delete from repository.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server name."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDDeleteInstance.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+  <!-- ==================================== -->
+  <!--   Rename Server and Instance       	-->
+  <!-- ==================================== -->
+  <step-type name="Rename Server and Instance">
+    <description>This will rename the server and instance.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server name."/>
+      </property>
+      <property name="serverNewName" required="true">
+        <property-ui type="textBox" label="Server's New Name" description="Server's new name."/>
+      </property>
+      <property name="instanceNewName" required="false">
+        <property-ui type="textBox" label="Instance New Name" description="Instance new name."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDRenameServerAndInstance.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+ 
+  <!-- ==================================== -->
+  <!--   Set Instance Type              	-->
+  <!-- ==================================== -->
+  <step-type name="Set Instance Type">
+    <description>This will set instance type.  This is the main method for resizing instance.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server name."/>
+      </property>
+      <property name="instanceTypeName" required="true">
+        <property-ui type="textBox" label="Instance Type Name" description="The name of the instance type"/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDSetInstanceType.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+ 
+  <!-- ==================================== -->
+  <!--   Add Volume                     	-->
+  <!-- ==================================== -->
+  <step-type name="Add Volume">
+    <description>This will add a volume to an instance.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server name."/>
+      </property>
+      <property name="volumeName" required="true">
+        <property-ui type="textBox" label="Volume Name" description="The name of the volume"/>
+      </property>
+      <property name="device" required="true">
+        <property-ui type="textBox" label="Device" description="Host device mount point. E.G. /dev/xvdd"/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDAddVolume.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+ 
+ 
+  <!-- ==================================== -->
+  <!--   Remove Volume                     	-->
+  <!-- ==================================== -->
+  <step-type name="Remove Volume">
+    <description>This will remove a volume from an instance.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server name."/>
+      </property>
+      <property name="device" required="true">
+        <property-ui type="textBox" label="Device" description="The device to which the volume is attached.  E.G. /dev/xvdd."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDRemoveVolume.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+ 
+  <!-- ==================================== -->
+  <!--   Create Volume                     	-->
+  <!-- ==================================== -->
+  <step-type name="Create Volume">
+    <description>This will create a new volume</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="volumeName" required="true">
+        <property-ui type="textBox" label="Volume Name" description="Volume name."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud"/>
+      </property>
+      <property name="description" required="false">
+        <property-ui type="textBox" label="Description" description="The detail outline of the volume"/>
+      </property>
+      <property name="size" required="true">
+        <property-ui type="textBox" label="Size" description="The size of the volume"/>
+      </property>
+      <property name="iops" required="false">
+        <property-ui type="textBox" label="IOPS" description="The speed of the volume"/>
+      </property>
+      <property name="volumeType" required="false">
+        <property-ui type="textBox" label="Volume Type" description="The name of the volume type."/>
+      </property>
+      <property name="volumeSnapshot" required="false">
+        <property-ui type="textBox" label="Volume Snapshot" description="The name of a volume snapshot from which the volume will be created."/>
+      </property>
+      <property name="datacenter" required="true">
+        <property-ui type="textBox" label="Data Center" description="The name of a data center."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDCreateVolume.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+  <!-- ==================================== -->
+  <!--   Destroy Volume                     -->
+  <!-- ==================================== -->
+  <step-type name="Destroy Volume">
+    <description>This will destroy volume</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="volumeName" required="true">
+        <property-ui type="textBox" label="Volume Name" description="Volume name."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud"/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDDestroyVolume.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+  <!-- ==================================== -->
+  <!--   Create Snapshot                     	-->
+  <!-- ==================================== -->
+  <step-type name="Create Snapshot">
+    <description>This will create a snapshot of a volume</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+     <property name="snapshotName" required="true">
+        <property-ui type="textBox" label="Snapshot Name" description="Snapshot name."/>
+      </property>
+      <property name="description" required="false">
+        <property-ui type="textBox" label="Description" description="The detail outline of the snapshot"/>
+      </property>
+      <property name="volumeName" required="true">
+        <property-ui type="textBox" label="Volume Name" description="Volume name."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud"/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDCreateSnapshot.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+
+  <!-- ==================================== -->
+  <!--   Remove Snapshot                     	-->
+  <!-- ==================================== -->
+  <step-type name="Remove Snapshot">
+    <description>This will remove a snapshot of a volume</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+     <property name="snapshotName" required="true">
+        <property-ui type="textBox" label="Snapshot Name" description="Snapshot name."/>
+      </property>
+       <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud"/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDRemoveSnapshot.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+   <!-- ==================================== -->
+  <!--   Revert to Snapshot                     	-->
+  <!-- ==================================== -->
+  <step-type name="Revert to Snapshot">
+    <description>This will revert a volume being used by a server to a specific snapshot.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server name."/>
+      </property>
+      <property name="device" required="true">
+        <property-ui type="textBox" label="Device" description="The device that has current volume that is being replaced by snapshot.."/>
+      </property>
+     <property name="snapshotName" required="true">
+        <property-ui type="textBox" label="Snapshot Name" description="Snapshot name to use for new volume to attach to server."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDRevertToSnapshot.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+  <!-- ==================================== -->
+  <!--   Create IP Address              	-->
+  <!-- ==================================== -->
+  <step-type name="Create IP Address">
+    <description>This will manually assign a IP address to an instance.  Otherwise an instance gets a DHCP assignment.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="ipAddressName" required="true">
+        <property-ui type="textBox" label="IP Address Name" description="IP Address name."/>
+      </property>
+      <property name="description" required="false">
+        <property-ui type="textBox" label="Description" description="Description of IP Address."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="Cloud name."/>
+      </property>
+      <property name="networkName" required="false">
+        <property-ui type="textBox" label="Network Name" description="The name of the network related to IP address."/>
+      </property>
+      <property name="domain" required="false">
+        <property-ui type="selectBox" label="Domain" description="The domain of the IP Address."/>
+  		<value label="EC2 Classic">ec2_classic</value>
+ 		<value label="VPC">vpc</value>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDCreateIPAddress.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+   <!-- ==================================== -->
+  <!--   Destroy IP Address              	-->
+  <!-- ==================================== -->
+  <step-type name="Destroy IP Address">
+    <description>This will manually assign a IP address to an instance.  Otherwise an instance gets a DHCP assignment.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="ipAddressName" required="true">
+        <property-ui type="textBox" label="IP Address Name" description="IP Address name."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="Cloud name."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDDestroyIPAddress.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+  <!-- ==================================== -->
+  <!--   Add NIC (Add IP Address)       	-->
+  <!-- ==================================== -->
+  <step-type name="Add NIC (Add IP Address)">
+    <description>This will manually assign a IP address to an instance.  Otherwise an instance gets a DHCP assignment.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server name."/>
+      </property>
+      <property name="ipAddressName" required="true">
+        <property-ui type="textBox" label="IP Address Name" description="IP Address name."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDAddIPAddress.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+   
+  <!-- ==================================== -->
+  <!--   Remove NIC (Remove IP Address)       	-->
+  <!-- ==================================== -->
+  <step-type name="Remove NIC (Remove IP Address)">
+    <description>This will manually remove a IP address from an instance.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server name."/>
+      </property>
+      <property name="ipAddressName" required="true">
+        <property-ui type="textBox" label="IP Address Name" description="IP Address name."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDRemoveIPAddress.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+   
+  
+  <!-- ==================================== -->
+  <!--   Select Network                 	-->
+  <!-- ==================================== -->
+  <step-type name="Select Network">
+    <description>Select sub-network of the to be used by an instance.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server name."/>
+      </property>
+      <property name="networkName" required="true">
+        <property-ui type="textBox" label="Network Name" description="Network name."/>
+      </property>
+      <property name="subnetName" required="true">
+        <property-ui type="textBox" label="Subnetwork Name" description="Subnet name."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDSelectNetwork.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+   
+   
+  <!-- ==================================== -->
+  <!--   Run Executable      				-->
+  <!-- ==================================== -->
+  <step-type name="Run Executable">
+    <description>Run an executable script.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server to add to specific group."/>
+      </property>
+      <property name="executableScriptName" required="false">
+        <property-ui type="textBox" label="Script Name" description="Details of the instance."/>
+      </property>
+     <property name="inputs" required="false">
+        <property-ui type="textAreaBox" label="Inputs" description="Inputs for launching instances.  E.G.  ADMIN_PASSWORD=text:test.  Inputs are separated by a new line in text area. "/>
+      </property>
+      <property name="blocking" required="false">
+        <property-ui type="checkBox" label="Blocking" description="Check, if you wish to have step wait for script execution to complete."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDRunExecutable.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+  <!-- ==================================== -->
+  <!--   Run Server Preparation Scripts      -->
+  <!-- ==================================== -->
+  <step-type name="Run Server Preparation Scripts">
+    <description>Run scripts related to server template for a server/instance.  This will generally use inputs defined on server creation, but those inputs can be overriden.</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="serverName" required="true">
+        <property-ui type="textBox" label="Server Name" description="Server to add to specific group."/>
+      </property>
+     <property name="inputs" required="false">
+        <property-ui type="textAreaBox" label="Input Overrides" description="Override any current server settings for these inputs.  E.G.  ADMIN_PASSWORD=text:test.  Inputs are separated by a new line in text area. "/>
+      </property>
+   </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDRunSysprep.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+  <!-- ==================================== -->
+  <!--   Add Member					        -->
+  <!-- ==================================== -->
+  <step-type name="Add Member (User)">
+    <description>Add a user to an account</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="firstName" required="true">
+        <property-ui type="textBox" label="First Name" description="User's first name."/>
+      </property>
+      <property name="lastName" required="true">
+        <property-ui type="textBox" label="Last Name" description="User's last name."/>
+      </property>
+      <property name="company" required="true">
+        <property-ui type="textBox" label="Company" description="User's company."/>
+      </property>
+      <property name="email" required="true">
+        <property-ui type="textBox" label="Email" description="User's email."/>
+      </property>
+      <property name="phone" required="true">
+        <property-ui type="textBox" label="Phone" description="User's phone number."/>
+      </property>
+      <property name="password" required="true">
+        <property-ui type="textBox" label="Password" description="User's password."/>
+      </property>
+   </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDAddUser.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  
+  <!-- ==================================== -->
+  <!--   Set Member	Permissions		        -->
+  <!-- ==================================== -->
+  <!--
+  <step-type name="Set Member Permissions">
+    <description>Add a user to an account</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="firstName" required="true">
+        <property-ui type="textBox" label="First Name" description="User's first name."/>
+      </property>
+      <property name="lastName" required="true">
+        <property-ui type="textBox" label="Last Name" description="User's last name."/>
+      </property>
+      <property name="observer" required="false" default-value="true">
+        <property-ui type="checkBox" label="observer" description="Set has observer role."/>
+      </property>
+      <property name="actor" required="false" default-value="true">
+        <property-ui type="checkBox" label="actor" description="Set has actor role."/>
+      </property>
+      <property name="serverLogin" required="false" default-value="true">
+        <property-ui type="checkBox" label="server_login" description="Set has server_login role."/>
+      </property>
+   </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg file="RSRun.jar"/>
+      <arg file="UCDSetPermissions.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+      <arg file="${PLUGIN_HOME}"/>
+    </command>
+  </step-type>
+  -->
+</plugin>

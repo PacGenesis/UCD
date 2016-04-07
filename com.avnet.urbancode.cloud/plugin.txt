@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <header>
+    <identifier version="@@@@" id="com.urbancode.air.plugin.rightscale" name="RightScale"/>
+    <description>
+    	The RightScale plugin will provide steps to manage Cloud environments.
+      </description>
+    <tag>Cloud/RightScale</tag>
+  </header>
+   
+  <!-- ==================================== -->
+  <!--   Create Firewall Group				-->
+  <!-- ==================================== -->
+  <step-type name="Create Firewall Group">
+    <description>Create a security group</description>
+    <properties>
+      <property name="refreshToken" required="true">
+        <property-ui type="textBox" label="Refresh Token" description="The value found in menu selection: Settings:API Credentials:Refresh Token."/>
+      </property>
+      <property name="name" required="true">
+        <property-ui type="textBox" label="Name" description="Security groups name."/>
+      </property>
+      <property name="description" required="false">
+        <property-ui type="textBox" label="Description" description="Environment name."/>
+      </property>
+      <property name="cloudName" required="true">
+        <property-ui type="textBox" label="Cloud Name" description="The name of the cloud to add the Security Group."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${JAVA_HOME}/bin/java.exe">
+      <arg value="-jar"/>
+      <arg path="classes:RSRun.jar"/>
+      <arg file="UCDCreateSecurityGroup.js"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+    </command>
+  </step-type>
+ 
+  
+</plugin>
