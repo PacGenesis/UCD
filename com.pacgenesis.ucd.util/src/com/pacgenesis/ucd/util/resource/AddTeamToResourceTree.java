@@ -20,7 +20,7 @@ import org.codehaus.jettison.json.JSONObject;
 import com.urbancode.ud.client.ResourceClient;
 
 @SuppressWarnings("deprecation")
-public class AddTeamToResourceTree extends ResourceClient {
+public class AddTeamToResourceTree {
 	static Options ops = new Options();
 	public static void buildOptions() {
 		ops.addOption(Option.builder("weburi").hasArg().argName("uri").required().desc("UCD URI").build());
@@ -31,43 +31,6 @@ public class AddTeamToResourceTree extends ResourceClient {
 		ops.addOption(Option.builder("team").hasArg().argName("Team").required().desc("Team to add").build());
 		
 	}
-
-	public AddTeamToResourceTree(URI url, String clientUser, String clientPassword) {
-		super(url, clientUser, clientPassword);
-		// TODO Auto-generated constructor stub
-	}
-	
-	public JSONArray getEnvironmentResource(String environmentName, String applicationName) throws ClientProtocolException, IOException, JSONException {
-	    String uri = this.url + "/cli/environment/getBaseResources?environment=" + encodePath(environmentName);
-	    if ((applicationName != null) && (!("".equals(applicationName)))) {
-	      uri = uri + "&application=" + encodePath(applicationName);
-	    }
-	    HttpGet method = new HttpGet(uri);
-	    HttpResponse response = invokeMethod(method);
-	    String body = getBody(response);
-	    return new JSONArray(body);
-	}
-	
-	void addTeamToResourceTree(String team, String parentResource) {
-		try {
-			this.addResourceToTeam(parentResource, team, "");
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			JSONArray children = this.getResourceChildren(parentResource);
-			for (int i = 0; i < children.length(); i++) {
-				String cPath = children.getJSONObject(i).getString("path");
-				cPath = cPath.replace("\\", "");
-				addTeamToResourceTree(team, cPath);
-			}
-		} catch (IOException | JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 
 	
 	public static void main(String[] args) {
@@ -116,7 +79,7 @@ public class AddTeamToResourceTree extends ResourceClient {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		AddTeamToResourceTree adder = new AddTeamToResourceTree(uri, userid, password);
+		ResourceClientExt adder = new ResourceClientExt(uri, userid, password);
 		try {
 			JSONArray resources = adder.getEnvironmentResource(env, application);
 			for (int i = 0; i < resources.length(); i++) {
