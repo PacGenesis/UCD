@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
@@ -13,6 +16,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 import com.urbancode.ud.client.ResourceClient;
 
+@SuppressWarnings("deprecation")
 public class AddTeamToResourceTree extends ResourceClient {
 
 	public AddTeamToResourceTree(URI url, String clientUser, String clientPassword) {
@@ -50,9 +54,18 @@ public class AddTeamToResourceTree extends ResourceClient {
 			e.printStackTrace();
 		}
 	}
+	
+	@SuppressWarnings("unused")
+	private static void buildOptions() {
+		Options options = new Options();
+		options.addOption(Option.builder("weburl").argName("url").required().desc("UCD URI").build());
+		options.addOption(Option.builder("userid").argName("userid").required().desc("user logon id").build());
+	}
 
 	
 	public static void main(String[] args) {
+		
+		
 		URI uri = null;
 		try {
 			uri = new URI(args[0]);
