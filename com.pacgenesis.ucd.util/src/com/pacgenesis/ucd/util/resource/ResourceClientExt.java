@@ -7,8 +7,10 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import com.urbancode.ud.client.ResourceClient;
 
@@ -19,17 +21,35 @@ public class ResourceClientExt extends ResourceClient {
 		// TODO Auto-generated constructor stub
 	}
 
-	public JSONArray getEnvironmentResource(String environmentName, String applicationName) throws ClientProtocolException, IOException, JSONException {
-	    String uri = this.url + "/cli/environment/getBaseResources?environment=" + encodePath(environmentName);
-	    if ((applicationName != null) && (!("".equals(applicationName)))) {
-	      uri = uri + "&application=" + encodePath(applicationName);
-	    }
-	    HttpGet method = new HttpGet(uri);
-	    HttpResponse response = invokeMethod(method);
-	    String body = getBody(response);
-	    return new JSONArray(body);
+	public JSONArray getEnvironmentResource(String environmentName, String applicationName)
+			throws ClientProtocolException, IOException, JSONException {
+		String uri = this.url + "/cli/environment/getBaseResources?environment=" + encodePath(environmentName);
+		if ((applicationName != null) && (!("".equals(applicationName)))) {
+			uri = uri + "&application=" + encodePath(applicationName);
+		}
+		HttpGet method = new HttpGet(uri);
+		HttpResponse response = invokeMethod(method);
+		String body = getBody(response);
+		return new JSONArray(body);
 	}
-	
+
+	public JSONObject getResourceInfo(String path) throws IOException, JSONException {
+		JSONObject result = null;
+
+		String uri = this.url + "/cli/resource/info?resource=" + encodePath(path);
+
+		HttpGet method = new HttpGet(uri);
+		try {
+			HttpResponse response = invokeMethod(method);
+			String body = getBody(response);
+			result = new JSONObject(body);
+		} finally {
+			releaseConnection(method);
+		}
+
+		return result;
+	}
+
 	void addTeamToResourceTree(String team, String parentResource) {
 		try {
 			this.addResourceToTeam(parentResource, team, "");
@@ -55,6 +75,15 @@ public class ResourceClientExt extends ResourceClient {
 				+ "&resource=" + encodePath(resource);
 
 		HttpDelete method = new HttpDelete(uri);
+		invokeMethod(method);
+	}
+
+	public void updateResource(String resource, JSONObject data) throws IOException {
+
+		String uri = this.url + "/cli/resource/update?resource=" + encodePath(resource);
+
+		HttpPut method = new HttpPut(uri);
+		method.setEntity(getStringEntity(data));
 		invokeMethod(method);
 	}
 }
