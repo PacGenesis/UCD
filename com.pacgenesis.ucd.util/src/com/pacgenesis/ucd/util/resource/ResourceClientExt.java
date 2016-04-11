@@ -24,13 +24,20 @@ public class ResourceClientExt extends ResourceClient {
 	public JSONArray getEnvironmentResource(String environmentName, String applicationName)
 			throws ClientProtocolException, IOException, JSONException {
 		String uri = this.url + "/cli/environment/getBaseResources?environment=" + encodePath(environmentName);
+		JSONArray result = null;
 		if ((applicationName != null) && (!("".equals(applicationName)))) {
 			uri = uri + "&application=" + encodePath(applicationName);
 		}
+		
 		HttpGet method = new HttpGet(uri);
-		HttpResponse response = invokeMethod(method);
-		String body = getBody(response);
-		return new JSONArray(body);
+		try {
+			HttpResponse response = invokeMethod(method);
+			String body = getBody(response);
+			result = new JSONArray(body);
+		} finally {
+			releaseConnection(method);
+		}
+		return result;
 	}
 
 	public JSONObject getResourceInfo(String path) throws IOException, JSONException {
@@ -73,9 +80,12 @@ public class ResourceClientExt extends ResourceClient {
 	public void deleteResourceFromTeam(String resource, String team, String type) throws IOException {
 		String uri = this.url + "/cli/resource/teams?team=" + encodePath(team) + "&type=" + encodePath(type)
 				+ "&resource=" + encodePath(resource);
-
 		HttpDelete method = new HttpDelete(uri);
-		invokeMethod(method);
+		try {
+			invokeMethod(method);
+		} finally {
+			releaseConnection(method);
+		}
 	}
 
 	public void updateResource(String resource, JSONObject data) throws IOException {
@@ -83,7 +93,11 @@ public class ResourceClientExt extends ResourceClient {
 		String uri = this.url + "/cli/resource/update?resource=" + encodePath(resource);
 
 		HttpPut method = new HttpPut(uri);
-		method.setEntity(getStringEntity(data));
-		invokeMethod(method);
+		try {
+			method.setEntity(getStringEntity(data));
+			invokeMethod(method);
+		} finally {
+			releaseConnection(method);
+		}
 	}
 }
