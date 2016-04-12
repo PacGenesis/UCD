@@ -77,6 +77,18 @@ public class ResourceClientExt extends ResourceClient {
 		}
 	}
 
+	public void addResourceToTeam(String resource, String team, String type) throws IOException {
+		String uri = this.url + "/cli/resource/teams?team=" + encodePath(team) + "&type=" + encodePath(type)
+				+ "&resource=" + encodePath(resource);
+
+		HttpPut method = new HttpPut(uri);
+		try {
+			invokeMethod(method);
+		} finally {
+			releaseConnection(method);
+		}
+	}
+
 	public void deleteResourceFromTeam(String resource, String team, String type) throws IOException {
 		String uri = this.url + "/cli/resource/teams?team=" + encodePath(team) + "&type=" + encodePath(type)
 				+ "&resource=" + encodePath(resource);
