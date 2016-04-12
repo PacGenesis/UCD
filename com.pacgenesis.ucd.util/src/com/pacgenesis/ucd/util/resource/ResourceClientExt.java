@@ -28,7 +28,7 @@ public class ResourceClientExt extends ResourceClient {
 		if ((applicationName != null) && (!("".equals(applicationName)))) {
 			uri = uri + "&application=" + encodePath(applicationName);
 		}
-		
+
 		HttpGet method = new HttpGet(uri);
 		try {
 			HttpResponse response = invokeMethod(method);
@@ -86,6 +86,30 @@ public class ResourceClientExt extends ResourceClient {
 		} finally {
 			releaseConnection(method);
 		}
+	}
+
+	public String setResourceProperty(String resourceName, String name, String value, boolean isSecure)
+			throws IOException {
+		if (("".equals(resourceName)) || ("".equals(name))) {
+			throw new IOException("a required argument was not supplied");
+		}
+
+		String uri = this.url + "/cli/resource/setProperty?resource=" + encodePath(resourceName) + "&name="
+				+ encodePath(name) + "&value=" + encodePath(value) + "&isSecure="
+				+ encodePath(String.valueOf(isSecure));
+		String result = null;
+		HttpPut method = new HttpPut(uri);
+		try {
+			invokeMethod(method);
+			if (isSecure) {
+				result = name + "=****";
+			} else {
+				result = name + "=" + value;
+			}
+		} finally {
+			releaseConnection(method);
+		}
+		return result;
 	}
 
 	public void updateResource(String resource, JSONObject data) throws IOException {
