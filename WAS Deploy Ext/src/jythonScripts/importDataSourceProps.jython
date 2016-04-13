@@ -1,0 +1,36 @@
+import sys;
+from java.util import Properties;
+from java.io import File;
+from java.io import FileInputStream;
+
+inPropsLocation = sys.argv[0];
+props = Properties();
+
+inPropsFile = File(inPropsLocation);
+stream = FileInputStream(inPropsFile);
+props.load(stream);
+
+clusterName = props.getProperty("clusterName"); 
+jdbcProviderName =props.getProperty("jdbcProviderName") 
+datasourceName = props.getProperty("datasourceName");
+
+expectedStatementCacheSize=props.getProperty("statementCacheSize");
+expectedConnectionTimeout=props.getProperty("connectionTimeout");
+
+containmentPath='/ServerCluster:' + clusterName + '/JDBCProvider:' + jdbcProviderName + '/DataSource:' + datasourceName + '/'
+
+datasource = AdminConfig.getid(containmentPath);
+connectionProps = AdminConfig.showAttribute(datasource, 'connectionPool')
+
+statementCacheSize = AdminConfig.showAttribute(datasource, 'statementCacheSize')
+connectionTimeout = AdminConfig.showAttribute(connectionProps, 'connectionTimeout')
+
+if int(statementCacheSize) != int(expectedStatementCacheSize):
+    print "Updating Statement Cache Size" 
+    AdminConfig.modify(datasource, [['statementCacheSize', expectedStatementCacheSize]]);
+
+if int(connectionTimeout) != int(expectedConnectionTimeout):
+    print "Updating Connection Timeout" 
+    AdminConfig.modify(connectionProps, [['connectionTimeout', expectedConnectionTimeout]]);
+
+AdminConfig.save();

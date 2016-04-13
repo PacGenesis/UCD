@@ -1,0 +1,23 @@
+import sys
+from java.util import Properties
+from java.io import File
+from java.io import FileInputStream
+
+props = Properties()
+inFile = File(sys.argv[0])
+inFileStream = FileInputStream(inFile)
+props.load(inFileStream);
+
+name=props.getProperty("name");
+scope=props.getProperty("scope");
+jndiName=props.getProperty("jndiName");
+
+parent=AdminConfig.getid(scope);
+if (parent is not None and len(parent) > 0):
+    print "Createing SIBJMSTopic " + name;
+    AdminTask.createSIBJMSTopic(parent, ["-name", name, "-jndiName", jndiName]);
+else:
+    print "Parent Object not found: " + scope;
+    sys.exit(1);
+
+AdminConfig.save();

@@ -1,0 +1,531 @@
+{
+    "path": "componentTemplates\/145ac9d9-2b55-4cbb-870d-75fd2d55b268",
+    "name": "BLA",
+    "description": "Component Template for BLA operations",
+    "active": true,
+    "envPropDefs": [],
+    "propDefs": [
+        {
+            "name": "BLAName",
+            "label": "BLA Name",
+            "pattern": "",
+            "type": "TEXT",
+            "value": "${p:application\/BLAName}",
+            "required": false,
+            "description": "The name of the BLA to work with."
+        },
+        {
+            "name": "BLADescription",
+            "label": "BLA Description",
+            "pattern": "",
+            "type": "TEXT",
+            "required": false,
+            "description": "The description to create the BLA in WebSphere with."
+        }
+    ],
+    "properties": [],
+    "processes": [
+        {
+            "name": "Create BLA Deleting Existing",
+            "description": "Create a Business-Level application, deleting existing BLAs with the same name.",
+            "defaultWorkingDir": "${p:resource\/work.dir}\/${p:component.name}",
+            "takesVersion": false,
+            "status": "",
+            "active": true,
+            "path": "componentTemplates\/145ac9d9-2b55-4cbb-870d-75fd2d55b268\/processes\/15eb3365-73e7-4eb6-ab2b-a60d81b73e0d",
+            "propDefs": [],
+            "rootActivity": {
+                "edges": [
+                    {
+                        "to": "c7c35545d7923e2374465fd15abd2b",
+                        "from": "Create BLA",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Delete BLA",
+                        "from": "Switch on Return",
+                        "type": "VALUE",
+                        "value": "false"
+                    },
+                    {
+                        "to": "Switch on Return",
+                        "from": "Check If BLA Exists",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Create BLA",
+                        "from": "Switch on Return",
+                        "type": "VALUE",
+                        "value": "true"
+                    },
+                    {
+                        "to": "Check If BLA Exists",
+                        "type": "ALWAYS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Create BLA",
+                        "from": "Delete BLA",
+                        "type": "SUCCESS",
+                        "value": ""
+                    }
+                ],
+                "offsets": [
+                    {
+                        "name": "Delete BLA",
+                        "x": -138.5,
+                        "y": 370,
+                        "h": 60,
+                        "w": 170
+                    },
+                    {
+                        "name": "c7c35545d7923e2374465fd15abd2b",
+                        "x": 1.5,
+                        "y": 590,
+                        "h": 40,
+                        "w": 80
+                    },
+                    {
+                        "name": "Create BLA",
+                        "x": 101.5,
+                        "y": 370,
+                        "h": 60,
+                        "w": 170
+                    },
+                    {
+                        "name": "Check If BLA Exists",
+                        "x": -70,
+                        "y": 90,
+                        "h": 60,
+                        "w": 220
+                    },
+                    {
+                        "name": "832950969dab2c50b4ea9e9dfa0f2d",
+                        "x": 291.5,
+                        "y": 205,
+                        "h": 50,
+                        "w": 610
+                    },
+                    {
+                        "name": "Switch on Return",
+                        "x": -98.5,
+                        "y": 200,
+                        "h": 60,
+                        "w": 280
+                    }
+                ],
+                "type": "graph",
+                "name": "720013ac-8aec-4623-bb22-b1ea4558b03e",
+                "children": [
+                    {
+                        "type": "finish",
+                        "name": "c7c35545d7923e2374465fd15abd2b",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Check If BLA Exists",
+                        "pluginName": "WAS - Deploy",
+                        "pluginVersion": 74,
+                        "properties": {
+                            "name": "${p:\/BLAName}",
+                            "cell": "${p?:resource\/websphere.cell}",
+                            "node": "${p?:resource\/websphere.node}",
+                            "server": "${p?:resource\/websphere.server}",
+                            "cluster": "${p?:resource\/websphere.cluster}",
+                            "commandPath": "${p?:resource\/websphere.commandPath}",
+                            "user": "${p?:resource\/websphere.user}",
+                            "password": "pbe{qHPhWXVhUVE5Yg9brmHJSEmwxE68kUf+K3regEZxuH9zE+ASHaMogZauQ+EGPUj1Qx5xcq0RJHs=}",
+                            "host": "${p?:resource\/websphere.host}",
+                            "port": "${p?:resource\/websphere.port}",
+                            "connType": "SOAP",
+                            "additionalArgs": ""
+                        },
+                        "type": "plugin",
+                        "name": "Check If BLA Exists",
+                        "children": []
+                    },
+                    {
+                        "propertyName": "Check If BLA Exists\/blaExists",
+                        "type": "switch",
+                        "name": "Switch on Return",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Create BLA",
+                        "pluginName": "WAS - Deploy",
+                        "pluginVersion": 74,
+                        "properties": {
+                            "name": "${p:BLAName}",
+                            "description": "${p:component\/BLADescription}",
+                            "cell": "${p?:resource\/websphere.cell}",
+                            "node": "${p?:resource\/websphere.node}",
+                            "server": "${p?:resource\/websphere.server}",
+                            "cluster": "${p?:resource\/websphere.cluster}",
+                            "commandPath": "${p?:resource\/websphere.commandPath}",
+                            "user": "${p?:resource\/websphere.user}",
+                            "password": "pbe{xlMxTu5py3YfSSFJelP0V/4HnTLAYeOqeIANTmaoTITbLR6IJhTldghSJYrfra51aLlaDCZkXqo=}",
+                            "host": "${p?:resource\/websphere.host}",
+                            "port": "${p?:resource\/websphere.port}",
+                            "connType": "SOAP",
+                            "additionalArgs": ""
+                        },
+                        "type": "plugin",
+                        "name": "Create BLA",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Delete BLA",
+                        "pluginName": "WAS - Deploy",
+                        "pluginVersion": 74,
+                        "properties": {
+                            "name": "${p:BLAName}",
+                            "cell": "${p?:resource\/websphere.cell}",
+                            "node": "${p?:resource\/websphere.node}",
+                            "server": "${p?:resource\/websphere.server}",
+                            "cluster": "${p?:resource\/websphere.cluster}",
+                            "commandPath": "${p?:resource\/websphere.commandPath}",
+                            "user": "${p?:resource\/websphere.user}",
+                            "password": "pbe{JWwDbI9uAnSYVoJs8EvtegpLqcbiWfH+kSmKImmE8OGBb4Gi06mOAW2Pb6NJotUsX5g2zEbhoKc=}",
+                            "host": "${p?:resource\/websphere.host}",
+                            "port": "${p?:resource\/websphere.port}",
+                            "connType": "SOAP",
+                            "additionalArgs": ""
+                        },
+                        "type": "plugin",
+                        "name": "Delete BLA",
+                        "children": []
+                    },
+                    {
+                        "name": "832950969dab2c50b4ea9e9dfa0f2d",
+                        "text": "Will fail process If the Check If BLA Exists could not determine if the BLA already existed.",
+                        "type": "note",
+                        "children": []
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Create BLA If neccessary",
+            "description": "Create a Business-Level application if one doesn't already exist.",
+            "defaultWorkingDir": "${p:resource\/work.dir}\/${p:component.name}",
+            "takesVersion": false,
+            "status": "",
+            "active": true,
+            "path": "componentTemplates\/145ac9d9-2b55-4cbb-870d-75fd2d55b268\/processes\/d7ca494e-8de2-4cd4-9adc-563e166dbd6d",
+            "propDefs": [],
+            "rootActivity": {
+                "edges": [
+                    {
+                        "to": "Create BLA",
+                        "from": "Switch on Return",
+                        "type": "VALUE",
+                        "value": "false"
+                    },
+                    {
+                        "to": "c7c35545d7923e2374465fd15abd2b",
+                        "from": "Switch on Return",
+                        "type": "VALUE",
+                        "value": "true"
+                    },
+                    {
+                        "to": "Check If BLA Exists",
+                        "type": "ALWAYS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Switch on Return",
+                        "from": "Check If BLA Exists",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "c7c35545d7923e2374465fd15abd2b",
+                        "from": "Create BLA",
+                        "type": "SUCCESS",
+                        "value": ""
+                    }
+                ],
+                "offsets": [
+                    {
+                        "name": "Check If BLA Exists",
+                        "x": -70,
+                        "y": 90,
+                        "h": 60,
+                        "w": 220
+                    },
+                    {
+                        "name": "Switch on Return",
+                        "x": -98.5,
+                        "y": 200,
+                        "h": 60,
+                        "w": 280
+                    },
+                    {
+                        "name": "Create BLA",
+                        "x": 101.5,
+                        "y": 370,
+                        "h": 60,
+                        "w": 170
+                    },
+                    {
+                        "name": "a451e363b95eb5c636ddbd42aca13e",
+                        "x": 281.5,
+                        "y": 210,
+                        "h": 40,
+                        "w": 540
+                    },
+                    {
+                        "name": "c7c35545d7923e2374465fd15abd2b",
+                        "x": 1.5,
+                        "y": 590,
+                        "h": 40,
+                        "w": 80
+                    }
+                ],
+                "type": "graph",
+                "name": "35bb6584-3687-43a0-9ac2-de2e254c71c2",
+                "children": [
+                    {
+                        "type": "finish",
+                        "name": "c7c35545d7923e2374465fd15abd2b",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Check If BLA Exists",
+                        "pluginName": "WAS - Deploy",
+                        "pluginVersion": 74,
+                        "properties": {
+                            "name": "${p:BLAName}",
+                            "cell": "${p?:resource\/websphere.cell}",
+                            "node": "${p?:resource\/websphere.node}",
+                            "server": "${p?:resource\/websphere.server}",
+                            "cluster": "${p?:resource\/websphere.cluster}",
+                            "commandPath": "${p?:resource\/websphere.commandPath}",
+                            "user": "${p?:resource\/websphere.user}",
+                            "password": "pbe{cXPiVVFMA2P+XE5NrmtaUtiYDhc+YMQcqnem5SuH6EixKZmUCHDKEp8GrT4uy4fC3VjQj7wxIC8=}",
+                            "host": "${p?:resource\/websphere.host}",
+                            "port": "${p?:resource\/websphere.port}",
+                            "connType": "SOAP",
+                            "additionalArgs": ""
+                        },
+                        "type": "plugin",
+                        "name": "Check If BLA Exists",
+                        "children": []
+                    },
+                    {
+                        "propertyName": "Check If BLA Exists\/blaExists",
+                        "type": "switch",
+                        "name": "Switch on Return",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Create BLA",
+                        "pluginName": "WAS - Deploy",
+                        "pluginVersion": 74,
+                        "properties": {
+                            "name": "${p:BLAName}",
+                            "description": "${p:component\/BLADescription}",
+                            "cell": "${p?:resource\/websphere.cell}",
+                            "node": "${p?:resource\/websphere.node}",
+                            "server": "${p?:resource\/websphere.server}",
+                            "cluster": "${p?:resource\/websphere.cluster}",
+                            "commandPath": "${p?:resource\/websphere.commandPath}",
+                            "user": "${p?:resource\/websphere.user}",
+                            "password": "pbe{N2ULZot5CEy3bf1cLXeIVodRcuvn+R/55VGPFTP5V7rDHXS/I7j+HwScuXmaHj7m3hPuRf/vO/0=}",
+                            "host": "${p?:resource\/websphere.host}",
+                            "port": "${p?:resource\/websphere.port}",
+                            "connType": "SOAP",
+                            "additionalArgs": ""
+                        },
+                        "type": "plugin",
+                        "name": "Create BLA",
+                        "children": []
+                    },
+                    {
+                        "name": "a451e363b95eb5c636ddbd42aca13e",
+                        "text": "Will fail process if Check If BLA Exists step could not determine whether the BLA existed or not.",
+                        "type": "note",
+                        "children": []
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Start BLA",
+            "description": "",
+            "defaultWorkingDir": "${p:resource\/work.dir}\/${p:component.name}",
+            "takesVersion": false,
+            "status": "",
+            "active": true,
+            "path": "componentTemplates\/145ac9d9-2b55-4cbb-870d-75fd2d55b268\/processes\/bc50d179-d273-43ee-bea3-17fa5b35bf85",
+            "propDefs": [],
+            "rootActivity": {
+                "edges": [
+                    {
+                        "to": "0f1e46a4939e66674c60bea57f8190",
+                        "from": "Start BLA",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Start BLA",
+                        "type": "ALWAYS",
+                        "value": ""
+                    }
+                ],
+                "offsets": [
+                    {
+                        "name": "0f1e46a4939e66674c60bea57f8190",
+                        "x": 0,
+                        "y": 420,
+                        "h": 40,
+                        "w": 80
+                    },
+                    {
+                        "name": "Start BLA",
+                        "x": -66.5,
+                        "y": 114,
+                        "h": 60,
+                        "w": 160
+                    }
+                ],
+                "type": "graph",
+                "name": "98305350-45c0-4365-bcc2-35ceca61175a",
+                "children": [
+                    {
+                        "type": "finish",
+                        "name": "0f1e46a4939e66674c60bea57f8190",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": true,
+                        "impersonationUseSudo": false,
+                        "commandName": "Start BLA",
+                        "pluginName": "WAS - Deploy",
+                        "pluginVersion": 74,
+                        "properties": {
+                            "name": "${p:BLAName}",
+                            "version": "",
+                            "cell": "${p?:resource\/websphere.cell}",
+                            "node": "${p?:resource\/websphere.node}",
+                            "server": "${p?:resource\/websphere.server}",
+                            "cluster": "${p?:resource\/websphere.cluster}",
+                            "commandPath": "${p?:resource\/websphere.commandPath}",
+                            "user": "${p?:resource\/websphere.user}",
+                            "password": "pbe{J1jmWSxT9VQVXglt1Us8SUK9vsmKU2TxhQSx5LykDAy1RC6tfPnSxoV563Dd58YDMGPVQh1tWUg=}",
+                            "host": "${p?:resource\/websphere.host}",
+                            "port": "${p?:resource\/websphere.port}",
+                            "connType": "SOAP",
+                            "additionalArgs": ""
+                        },
+                        "type": "plugin",
+                        "name": "Start BLA",
+                        "children": []
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Stop BLA",
+            "description": "",
+            "defaultWorkingDir": "${p:resource\/work.dir}\/${p:component.name}",
+            "takesVersion": false,
+            "status": "",
+            "active": true,
+            "path": "componentTemplates\/145ac9d9-2b55-4cbb-870d-75fd2d55b268\/processes\/02230c32-9aec-4af1-a6eb-912dd840ba85",
+            "propDefs": [],
+            "rootActivity": {
+                "edges": [
+                    {
+                        "to": "Stop BLA",
+                        "type": "ALWAYS",
+                        "value": ""
+                    },
+                    {
+                        "to": "15da0c693bcb5025dc33f7c80b9253",
+                        "from": "Stop BLA",
+                        "type": "SUCCESS",
+                        "value": ""
+                    }
+                ],
+                "offsets": [
+                    {
+                        "name": "15da0c693bcb5025dc33f7c80b9253",
+                        "x": 0,
+                        "y": 420,
+                        "h": 40,
+                        "w": 80
+                    },
+                    {
+                        "name": "Stop BLA",
+                        "x": -16.5,
+                        "y": 115,
+                        "h": 60,
+                        "w": 160
+                    }
+                ],
+                "type": "graph",
+                "name": "1e752465-a9a3-4bf9-a69c-d2aaa4e5115b",
+                "children": [
+                    {
+                        "type": "finish",
+                        "name": "15da0c693bcb5025dc33f7c80b9253",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": true,
+                        "impersonationUseSudo": false,
+                        "commandName": "Stop BLA",
+                        "pluginName": "WAS - Deploy",
+                        "pluginVersion": 74,
+                        "properties": {
+                            "name": "${p:BLAName}",
+                            "version": "",
+                            "cell": "${p?:resource\/websphere.cell}",
+                            "node": "${p?:resource\/websphere.node}",
+                            "server": "${p?:resource\/websphere.server}",
+                            "cluster": "${p?:resource\/websphere.cluster}",
+                            "commandPath": "${p?:resource\/websphere.commandPath}",
+                            "user": "${p?:resource\/websphere.user}",
+                            "password": "pbe{gmBgTBBwZE22SKhWdWwOUVMx46ZcBNMkCgkTi0trGq5ynLezg7O+BXpCnu0gyJ5I6GL0d4XMwAE=}",
+                            "host": "${p?:resource\/websphere.host}",
+                            "port": "${p?:resource\/websphere.port}",
+                            "connType": "SOAP",
+                            "additionalArgs": ""
+                        },
+                        "type": "plugin",
+                        "name": "Stop BLA",
+                        "children": []
+                    }
+                ]
+            }
+        }
+    ],
+    "genericProcesses": []
+}

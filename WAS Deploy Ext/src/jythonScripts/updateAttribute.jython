@@ -1,0 +1,23 @@
+import sys
+from java.util import Properties
+from java.io import File
+from java.io import FileInputStream
+
+props = Properties()
+inFile = File(sys.argv[0])
+inFileStream = FileInputStream(inFile)
+props.load(inFileStream);
+
+objectContainmentPath=props.getProperty("object");
+name=props.getProperty("attName");
+value=props.getProperty("attValue");
+
+object=AdminConfig.getid(objectContainmentPath);
+if (object is not None and len(object) > 0):
+    print "Updating attribute : "+ name + " with value : "+ value
+    AdminConfig.modify(object, [[name, value]]);
+else:
+    print "Object not found: " + objectContainmentPath;
+    sys.exit(1);
+
+AdminConfig.save();

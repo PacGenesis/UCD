@@ -1,0 +1,40 @@
+import sys;
+from java.util import Properties;
+from java.io import File;
+from java.io import FileInputStream;
+
+inPropsLocation = sys.argv[1];
+props = Properties();
+
+inPropsFile = File(inPropsLocation);
+stream = FileInputStream(inPropsFile);
+props.load(stream);
+
+
+cluster = AdminConfig.getid('/ServerCluster:'+sys.argv[0]+'/')
+clusterMembers = AdminConfig.list('ClusterMember', cluster).splitlines();
+
+expectedInitial = props.getProperty("initialHeapSize")
+expectedMaximum = props.getProperty("maximumHeapSize")
+
+for member in clusterMembers:
+    serverName = AdminConfig.showAttribute(member, 'memberName')
+    nodeName = AdminConfig.showAttribute(member, 'nodeName')
+    server = AdminConfig.getid('/Node:' + nodeName  + '/Server:'+serverName+'/')
+    
+    jvm = AdminConfig.list('JavaVirtualMachine', server)
+
+    initialHeapSize = AdminConfig.showAttribute(jvm, 'initialHeapSize')
+    maximumHeapSize = AdminConfig.showAttribute(jvm, 'maximumHeapSize')
+    memberName = AdminConfig.showAttribute(server, 'name');
+
+
+    if int(initialHeapSize) != int(expectedInitial):
+        print "Updating initial heap size for server " + memberName;
+        AdminConfig.modify(jvm, [['initialHeapSize', int(expectedInitial)]]);
+
+    if int(maximumHeapSize) != int(expectedMaximum):
+        print "Updating Maximum Heap Size for server " + memberName
+        AdminConfig.modify(jvm, [['maximumHeapSize', int(expectedMaximum)]]);
+
+AdminConfig.save();

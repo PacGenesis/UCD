@@ -1,0 +1,67 @@
+import sys
+from java.util import Properties
+from java.io import File
+from java.io import FileInputStream
+
+props = Properties()
+inFile = File(sys.argv[0])
+inFileStream = FileInputStream(inFile)
+props.load(inFileStream);
+
+clusterName=props.getProperty("clusterName");
+jdbcProviderName=props.getProperty("jdbcproviderName");
+if (clusterName is not None and len(clusterName) > 0):
+    scope="/ServerCluster:"+clusterName+"/JDBCProvider:"+jdbcProviderName+"/";
+else:
+    scope=props.getProperty("jdbcProviderLocation");
+
+
+name=props.getProperty("name");
+jndiName=props.getProperty("jndiName");
+dataStoreClassName=props.getProperty("dataStoreClassName")
+description = props.getProperty("desc");
+resourceProperties = props.getProperty("resourceProperties");
+
+resourcePropertiesList = [];
+if resourceProperties is not None:
+    for line in resourceProperties.splitlines():
+        subargs = line.split("|");
+        resourcePropertiesList.append(subargs);
+
+
+username=props.getProperty("aliasUsername");
+password=props.getProperty("aliasPassword");
+authAlias = props.getProperty("authAlias");
+
+
+jdbcProvider=AdminConfig.getid(scope);
+
+def defineJ2CAuthAlias(existingAuthAliases, alias, userId, password):
+    for existingAuth in existingAuthAliases:
+        if (AdminConfig.showAttribute(existingAuth, 'alias') == alias):
+          print "  " + alias + " exists"
+          break
+    else:
+        options = [['alias', alias], ['userId', userId], ['password', password]]
+        security = AdminConfig.getid("/Cell:" + AdminControl.getCell() + "/Security:/")
+        AdminConfig.create('JAASAuthData', security, options)
+        print "  " + alias + " created"
+
+
+
+AdminTask.createDatasource(jdbcProvider, 
+    [
+        '-name', name, 
+        '-description', description,
+        '-jndiName', jndiName, 
+        '-dataStoreHelperClassName', dataStoreClassName, 
+        '-configureResourceProperties', resourcePropertiesList
+    ]
+) 
+
+existingAliases = AdminConfig.list("JAASAuthData").splitlines();
+defineJ2CAuthAlias(existingAliases, authAlias, username, password);
+datasource = AdminConfig.getid(scope + "DataSource:" + name+"/");
+AdminConfig.modify(datasource, [["authDataAlias", authAlias], ["xaRecoveryAuthAlias", authAlias]]);
+
+AdminConfig.save();

@@ -1,0 +1,11 @@
+import sys
+
+objectConPath = sys.argv[0]
+object = AdminConfig.getid(objectConPath);
+if (object is not None and len(object) >0):
+    print "Object with Containment Path " + objectConPath + " found!";
+    print object;
+    sys.exit(0);
+else:
+    print "Object with Containment Path " + objectConPath + " not found!";
+    sys.exit(1);

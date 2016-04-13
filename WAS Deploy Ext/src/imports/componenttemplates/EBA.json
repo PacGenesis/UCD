@@ -1,0 +1,557 @@
+{
+    "path": "componentTemplates\/0d5b53f8-0ec2-4e69-a54c-44fa40b41c15",
+    "name": "EBA",
+    "description": "Component Template for WebSphere EBA deployments.",
+    "active": true,
+    "envPropDefs": [],
+    "propDefs": [
+        {
+            "name": "CUName",
+            "label": "Composition Unit Name",
+            "pattern": "",
+            "type": "TEXT",
+            "required": true,
+            "description": "The name of the composition unit to be created on BLAs."
+        },
+        {
+            "name": "AssetName",
+            "label": "Asset Name",
+            "pattern": "",
+            "type": "TEXT",
+            "required": true,
+            "description": "The name of the asset to be created on Importing into WebSphere"
+        },
+        {
+            "name": "assetDescription",
+            "label": "Asset Description",
+            "pattern": "",
+            "type": "TEXT",
+            "required": false,
+            "description": "The description to be create for the asset in WebSphere."
+        },
+        {
+            "name": "contextRootMappings",
+            "label": "Context Root Mappings",
+            "pattern": "",
+            "type": "TEXTAREA",
+            "required": true,
+            "description": "The Context Root Mappings for WebModules in this asset. New line separted list in the format : WebModule->contextRoot"
+        },
+        {
+            "name": "EBAFileName",
+            "label": "EBA File Name",
+            "pattern": "",
+            "type": "TEXT",
+            "required": true,
+            "description": "The name of the EBA File to be uploaded for the asset."
+        },
+        {
+            "name": "virtualHostMappings",
+            "label": "Virtual Host Mappings",
+            "pattern": "",
+            "type": "TEXTAREA",
+            "required": false,
+            "description": "The Virtual Host Mappings for WebModules in this asset. New line separted list in the format : WebModule->virtualHost"
+        }
+    ],
+    "properties": [],
+    "processes": [
+        {
+            "name": "Add Resource to Composition Unit(Creating CU if neccesary) on a BLA",
+            "description": "Add Resource to Composition Unit(Creating CU if neccesary) on a BLA",
+            "defaultWorkingDir": "${p:resource\/work.dir}\/${p:component.name}",
+            "takesVersion": false,
+            "status": "",
+            "active": true,
+            "path": "componentTemplates\/0d5b53f8-0ec2-4e69-a54c-44fa40b41c15\/processes\/cfbcebe7-c399-4cf6-b918-dc220fdf5217",
+            "propDefs": [],
+            "rootActivity": {
+                "edges": [
+                    {
+                        "to": "Check If Composition Unit Exists",
+                        "from": "1e98f58225f4831dfcae8a071ea537",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "1e98f58225f4831dfcae8a071ea537",
+                        "type": "ALWAYS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Add Target to Composition Unit",
+                        "from": "Add Asset to BLA",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Add Asset to BLA",
+                        "from": "Switch On Return",
+                        "type": "VALUE",
+                        "value": "false"
+                    },
+                    {
+                        "to": "f92cc2d95fc9b289741207188fb32a",
+                        "from": "Add Target to Composition Unit",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Switch On Return",
+                        "from": "Check If Composition Unit Exists",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Add Target to Composition Unit",
+                        "from": "Switch On Return",
+                        "type": "VALUE",
+                        "value": "true"
+                    }
+                ],
+                "offsets": [
+                    {
+                        "name": "Add Asset to BLA",
+                        "x": -205,
+                        "y": 360,
+                        "h": 60,
+                        "w": 210
+                    },
+                    {
+                        "name": "Add Target to Composition Unit",
+                        "x": 80,
+                        "y": 360,
+                        "h": 60,
+                        "w": 280
+                    },
+                    {
+                        "name": "Check If Composition Unit Exists",
+                        "x": -100,
+                        "y": 160,
+                        "h": 60,
+                        "w": 280
+                    },
+                    {
+                        "name": "1e98f58225f4831dfcae8a071ea537",
+                        "x": -60,
+                        "y": 60,
+                        "h": 60,
+                        "w": 200
+                    },
+                    {
+                        "name": "f92cc2d95fc9b289741207188fb32a",
+                        "x": 0,
+                        "y": 530,
+                        "h": 40,
+                        "w": 80
+                    },
+                    {
+                        "name": "Switch On Return",
+                        "x": -130,
+                        "y": 250,
+                        "h": 60,
+                        "w": 340
+                    },
+                    {
+                        "name": "7acd79299bef27cc2562bf8296f6ca",
+                        "x": 331.5,
+                        "y": 260,
+                        "h": 40,
+                        "w": 470
+                    }
+                ],
+                "type": "graph",
+                "name": "2d3c7a5f-6e52-4853-b499-bcfcd8a593d2",
+                "children": [
+                    {
+                        "type": "finish",
+                        "name": "f92cc2d95fc9b289741207188fb32a",
+                        "children": []
+                    },
+                    {
+                        "lockName": "${p:component.name}-${p:componentProcess.name}",
+                        "type": "acquireLock",
+                        "name": "1e98f58225f4831dfcae8a071ea537",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Check If Composition Unit Exists",
+                        "pluginName": "WAS - Deploy",
+                        "pluginVersion": 74,
+                        "properties": {
+                            "name": "${p:BLAName}",
+                            "cuName": "${p:CUName}",
+                            "cell": "${p?:resource\/websphere.cell}",
+                            "node": "${p?:resource\/websphere.node}",
+                            "server": "${p?:resource\/websphere.server}",
+                            "cluster": "${p?:resource\/websphere.cluster}",
+                            "commandPath": "${p?:resource\/websphere.commandPath}",
+                            "user": "${p?:resource\/websphere.user}",
+                            "password": "pbe{7FthWr9ndmQweup5TUuybr4nZ+b6ySSkHGTUt54tk8EQ+ufBVaaxJvgELOf8KpvDEMWbV9/dAY0=}",
+                            "host": "${p?:resource\/websphere.host}",
+                            "port": "${p?:resource\/websphere.port}",
+                            "connType": "SOAP",
+                            "additionalArgs": ""
+                        },
+                        "type": "plugin",
+                        "name": "Check If Composition Unit Exists",
+                        "children": []
+                    },
+                    {
+                        "propertyName": "Check If Composition Unit Exists\/cuExists",
+                        "type": "switch",
+                        "name": "Switch On Return",
+                        "children": []
+                    },
+                    {
+                        "name": "7acd79299bef27cc2562bf8296f6ca",
+                        "text": "Will fail process if Check If Composition Unit Exists could not make a determination.",
+                        "type": "note",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "workingDir": "\/opt\/IBM\/WebSphere",
+                        "commandName": "Add Asset to BLA",
+                        "pluginName": "WAS - Deploy",
+                        "pluginVersion": 74,
+                        "properties": {
+                            "blaName": "${p:BLAName}",
+                            "assetName": "${p:AssetName}",
+                            "description": "${p?:assetDescription}",
+                            "compUnitName": "${p:CUName}",
+                            "startingWeight": "1",
+                            "restartBehaviour": "DEFAULT",
+                            "virtualHostMappings": "${p:virtualHostMappings}",
+                            "contextRootMappings": "${p:contextRootMappings}",
+                            "cell": "${p?:resource\/websphere.cell}",
+                            "node": "${p?:resource\/websphere.node}",
+                            "server": "${p?:resource\/websphere.server}",
+                            "cluster": "${p?:resource\/websphere.cluster}",
+                            "commandPath": "${p?:resource\/websphere.commandPath}",
+                            "user": "${p?:resource\/websphere.user}",
+                            "password": "pbe{kFfCbGpNcFcnZEd0anhCbMslKi5nz0+IFEJlGCBzNnJf8qRQCS2qISPHE7XcoxWZhCkmFBVTK4Q=}",
+                            "host": "${p?:resource\/websphere.host}",
+                            "port": "${p?:resource\/websphere.port}",
+                            "connType": "SOAP",
+                            "additionalArgs": ""
+                        },
+                        "type": "plugin",
+                        "name": "Add Asset to BLA",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Add Target to Composition Unit",
+                        "pluginName": "WAS - Deploy",
+                        "pluginVersion": 74,
+                        "properties": {
+                            "blaName": "${p:BLAName}",
+                            "compUnitName": "${p:CUName}",
+                            "cell": "${p?:resource\/websphere.cell}",
+                            "node": "${p?:resource\/websphere.node}",
+                            "server": "${p?:resource\/websphere.server}",
+                            "cluster": "${p?:resource\/websphere.cluster}",
+                            "commandPath": "${p?:resource\/websphere.commandPath}",
+                            "user": "${p?:resource\/websphere.user}",
+                            "password": "pbe{I1m9YmtckmN+ZXRlmkn6TymETy7IBal3874aHqghw63Nm7LdyDu3J1mgKHhG6j3O36VezJX+pAg=}",
+                            "host": "${p?:resource\/websphere.host}",
+                            "port": "${p?:resource\/websphere.port}",
+                            "connType": "SOAP",
+                            "additionalArgs": ""
+                        },
+                        "type": "plugin",
+                        "name": "Add Target to Composition Unit",
+                        "children": []
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Delete Composition Unit",
+            "description": "",
+            "defaultWorkingDir": "${p:resource\/work.dir}\/${p:component.name}",
+            "takesVersion": false,
+            "status": "",
+            "active": true,
+            "path": "componentTemplates\/0d5b53f8-0ec2-4e69-a54c-44fa40b41c15\/processes\/648fd17b-cb65-41c0-8b4d-9560aef2cee2",
+            "propDefs": [],
+            "rootActivity": {
+                "edges": [
+                    {
+                        "to": "012005b7f993bf0c766c573d91c498",
+                        "from": "Delete Composition Unit",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Delete Composition Unit",
+                        "from": "Switch On Result",
+                        "type": "VALUE",
+                        "value": "true"
+                    },
+                    {
+                        "to": "Switch On Result",
+                        "from": "Check If Composition Unit Exists",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Check If Composition Unit Exists",
+                        "type": "ALWAYS",
+                        "value": ""
+                    },
+                    {
+                        "to": "012005b7f993bf0c766c573d91c498",
+                        "from": "Switch On Result",
+                        "type": "VALUE",
+                        "value": "false"
+                    }
+                ],
+                "offsets": [
+                    {
+                        "name": "Check If Composition Unit Exists",
+                        "x": -100,
+                        "y": 70,
+                        "h": 60,
+                        "w": 280
+                    },
+                    {
+                        "name": "Switch On Result",
+                        "x": -130,
+                        "y": 160,
+                        "h": 60,
+                        "w": 340
+                    },
+                    {
+                        "name": "2a41c8edc5f2bd5483367a97acd57a",
+                        "x": 301.5,
+                        "y": 169,
+                        "h": 40,
+                        "w": 480
+                    },
+                    {
+                        "name": "Delete Composition Unit",
+                        "x": 111.5,
+                        "y": 280,
+                        "h": 60,
+                        "w": 240
+                    },
+                    {
+                        "name": "012005b7f993bf0c766c573d91c498",
+                        "x": 0,
+                        "y": 420,
+                        "h": 40,
+                        "w": 80
+                    }
+                ],
+                "type": "graph",
+                "name": "08af08bb-d0c1-482f-a59d-86c59272471c",
+                "children": [
+                    {
+                        "type": "finish",
+                        "name": "012005b7f993bf0c766c573d91c498",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Delete Composition Unit",
+                        "pluginName": "WAS - Deploy",
+                        "pluginVersion": 74,
+                        "properties": {
+                            "cuname": "${p:CUName}",
+                            "blaname": "${p:BLAName}",
+                            "force": "false",
+                            "cell": "${p?:resource\/websphere.cell}",
+                            "node": "${p?:resource\/websphere.node}",
+                            "server": "${p?:resource\/websphere.server}",
+                            "cluster": "${p?:resource\/websphere.cluster}",
+                            "commandPath": "${p?:resource\/websphere.commandPath}",
+                            "user": "${p?:resource\/websphere.user}",
+                            "password": "pbe{fmuqSTBuul/Zcmt4sGI8dk/5cLuBEopAuBtqU1oUV05yuYP6kuM+pBOoO8zGuMCPnk2FWXAAFaA=}",
+                            "host": "${p?:resource\/websphere.host}",
+                            "port": "${p?:resource\/websphere.port}",
+                            "connType": "SOAP",
+                            "additionalArgs": ""
+                        },
+                        "type": "plugin",
+                        "name": "Delete Composition Unit",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Check If Composition Unit Exists",
+                        "pluginName": "WAS - Deploy",
+                        "pluginVersion": 74,
+                        "properties": {
+                            "name": "${p:BLAName}",
+                            "cuName": "${p:CUName}",
+                            "cell": "${p?:resource\/websphere.cell}",
+                            "node": "${p?:resource\/websphere.node}",
+                            "server": "${p?:resource\/websphere.server}",
+                            "cluster": "${p?:resource\/websphere.cluster}",
+                            "commandPath": "${p?:resource\/websphere.commandPath}",
+                            "user": "${p?:resource\/websphere.user}",
+                            "password": "pbe{SnKbcwRVCVTvYf5QsGHPWTx0ZL0aodQ2DGkVSHOEH5U6ntExDKu8HikWxfUML3XGyQGf3YBbO5o=}",
+                            "host": "${p?:resource\/websphere.host}",
+                            "port": "${p?:resource\/websphere.port}",
+                            "connType": "SOAP",
+                            "additionalArgs": ""
+                        },
+                        "type": "plugin",
+                        "name": "Check If Composition Unit Exists",
+                        "children": []
+                    },
+                    {
+                        "propertyName": "Check If Composition Unit Exists\/cuExists",
+                        "type": "switch",
+                        "name": "Switch On Result",
+                        "children": []
+                    },
+                    {
+                        "name": "2a41c8edc5f2bd5483367a97acd57a",
+                        "text": "Process will fail if Check If Composition Unit Exists cannot determine if the cu exists",
+                        "type": "note",
+                        "children": []
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Import EBA to WebSphere",
+            "description": "",
+            "defaultWorkingDir": "${p:resource\/work.dir}\/${p:component.name}",
+            "takesVersion": true,
+            "inventoryActionType": "ADD",
+            "status": "Active",
+            "configActionType": "ADD",
+            "active": true,
+            "path": "componentTemplates\/0d5b53f8-0ec2-4e69-a54c-44fa40b41c15\/processes\/8bc191b7-8aba-4f4a-9f56-f777669d01cb",
+            "propDefs": [],
+            "rootActivity": {
+                "edges": [
+                    {
+                        "to": "Import Asset",
+                        "from": "Download Artifacts",
+                        "type": "SUCCESS",
+                        "value": ""
+                    },
+                    {
+                        "to": "Download Artifacts",
+                        "type": "ALWAYS",
+                        "value": ""
+                    },
+                    {
+                        "to": "b1828c16c8f4e7fa0816df87b11036",
+                        "from": "Import Asset",
+                        "type": "SUCCESS",
+                        "value": ""
+                    }
+                ],
+                "offsets": [
+                    {
+                        "name": "b1828c16c8f4e7fa0816df87b11036",
+                        "x": 0,
+                        "y": 420,
+                        "h": 40,
+                        "w": 80
+                    },
+                    {
+                        "name": "Download Artifacts",
+                        "x": -70,
+                        "y": 80,
+                        "h": 60,
+                        "w": 220
+                    },
+                    {
+                        "name": "Import Asset",
+                        "x": -50,
+                        "y": 203.20000000000005,
+                        "h": 60,
+                        "w": 180
+                    }
+                ],
+                "type": "graph",
+                "name": "95927aaa-c046-46e1-90d4-bbe68eee1fca",
+                "children": [
+                    {
+                        "type": "finish",
+                        "name": "b1828c16c8f4e7fa0816df87b11036",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": false,
+                        "impersonationUseSudo": false,
+                        "commandName": "Download Artifacts",
+                        "pluginName": "IBM UrbanCode Deploy Versioned File Storage",
+                        "pluginVersion": 21,
+                        "properties": {
+                            "directoryOffset": ".",
+                            "artifactSetBaseDir": "",
+                            "fileIncludePatterns": "**\/*",
+                            "fileExcludePatterns": "",
+                            "syncMode": "true",
+                            "fullVerification": "true",
+                            "setFileExecuteBits": "false",
+                            "verifyFileIntegrity": "false",
+                            "versionId": "${p:version.id}",
+                            "serverUrl": "${p:server.url}",
+                            "compId": "${p:component.id}",
+                            "resId": "${p:resource.id}",
+                            "charset": ""
+                        },
+                        "type": "plugin",
+                        "name": "Download Artifacts",
+                        "children": []
+                    },
+                    {
+                        "allowFailure": false,
+                        "useImpersonation": false,
+                        "showHidden": true,
+                        "impersonationUseSudo": false,
+                        "commandName": "Import Asset",
+                        "pluginName": "WAS - Deploy",
+                        "pluginVersion": 74,
+                        "properties": {
+                            "file": "${p:component\/EBAFileName}",
+                            "storageType": "FULL",
+                            "cell": "${p?:resource\/websphere.cell}",
+                            "node": "${p?:resource\/websphere.node}",
+                            "server": "${p?:resource\/websphere.server}",
+                            "cluster": "${p?:resource\/websphere.cluster}",
+                            "commandPath": "${p?:resource\/websphere.commandPath}",
+                            "user": "${p?:resource\/websphere.user}",
+                            "password": "pbe{2mcDX3xefGktSUVaIHoCYHGFakHurc3XclIB1ZiG+j1kmpOvDuTJoxSl7sAkCrunR4mp6h5PRoE=}",
+                            "host": "${p?:resource\/websphere.host}",
+                            "port": "${p?:resource\/websphere.port}",
+                            "connType": "SOAP",
+                            "additionalArgs": ""
+                        },
+                        "type": "plugin",
+                        "name": "Import Asset",
+                        "children": []
+                    }
+                ]
+            }
+        }
+    ],
+    "genericProcesses": []
+}

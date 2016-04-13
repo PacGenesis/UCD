@@ -1,0 +1,30 @@
+import sys
+from java.util import Properties
+from java.io import File
+from java.io import FileInputStream
+
+props = Properties()
+inFile = File(sys.argv[0])
+inFileStream = FileInputStream(inFile)
+props.load(inFileStream);
+
+scope=props.getProperty("scope");
+name=props.getProperty("name");
+jndiName=props.getProperty("jndiName");
+busName=props.getProperty("busName");
+type=props.getProperty("type");
+
+parent=AdminConfig.getid(scope);
+if (parent is not None and len(parent) > 0):
+    print "Createing SIBJMSConnectionFactory " + name;
+    print "JNDIName : " + jndiName ;
+    print "busName : " + busName ;
+    print "type : " + type;
+    print "on parent " 
+    print parent
+    AdminTask.createSIBJMSConnectionFactory(parent, ["-name", name, "-jndiName", jndiName, "-busName", busName, "-type", type]);
+else:
+    print "Parent Object not found: " + scope;
+    sys.exit(1);
+
+AdminConfig.save();

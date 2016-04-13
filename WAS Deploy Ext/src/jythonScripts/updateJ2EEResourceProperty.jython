@@ -1,0 +1,45 @@
+import sys
+from java.util import Properties
+from java.io import File
+from java.io import FileInputStream
+
+props = Properties()
+inFile = File(sys.argv[0])
+inFileStream = FileInputStream(inFile)
+props.load(inFileStream);
+
+objectContainmentPath=props.getProperty("object");
+propName=props.getProperty("propName");
+propValue=props.getProperty("propValue");
+propType=props.getProperty("propType");
+
+object = AdminConfig.getid(objectContainmentPath);
+if (object is not None and len(object) > 0):
+    list= AdminConfig.list("J2EEResourcePropertySet", object).splitlines();
+    if (list is not None and len(list) > 0):
+        #use the first element
+        propSet = list[0];
+    else:
+        print "J2EEResourcePropertySet not found for object.";
+        print "Trying to create...";
+        propSet  = AdminConfig.create("J2EEResourcePropertySet", object, []);
+
+    propList = AdminConfig.list("J2EEResourceProperty", propSet).splitlines();
+    
+    found = 0;
+    for prop in propList:
+       if (AdminConfig.showAttribute(prop, "name") == propName):
+           print "Found J2EEProperty with name " + propName;
+           print "Updating ..."
+           AdminConfig.modify(prop, [["value", propValue],["type", propType]]);
+           found = 1;
+
+    if (found == 0):
+        print "Didnt find J2EEResourceProperty with name " + propName;
+        print "Creating..."
+        AdminConfig.create("J2EEResourceProperty", propSet, [["name", propName], ["type", propType], ["value", propValue]]);
+else:
+    print "object not found for containment path : " + objectContainmentPath;
+    sys.exit(1);
+
+AdminConfig.save();

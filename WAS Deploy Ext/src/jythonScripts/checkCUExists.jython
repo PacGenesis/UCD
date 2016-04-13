@@ -1,0 +1,24 @@
+import sys
+
+blaName = sys.argv[0]
+cuName = sys.argv[1]
+cuId = "WebSphere:cuname=" + cuName
+blaId = "WebSphere:blaname=" + blaName
+if (len(sys.argv) > 2) :
+    blaId = blaId + ",blaedition=" + sys.argv[2];
+
+cus = AdminTask.listCompUnits('[ -blaID "' + blaId + '" ]');
+if (len(cus) > 0):
+    found = 0
+    cuList = cus.splitlines();
+    for cu in cuList:
+        if (cu == cuId):
+            found = 1
+            break
+
+    if (found == 1):
+        sys.exit(0)
+    else:
+        sys.exit(30)
+else:
+    sys.exit(30)

@@ -1,0 +1,23 @@
+import sys;
+
+minimumSize=sys.argv[1];
+maximumSize=sys.argv[2];
+
+server = AdminConfig.getid('/Server:'+sys.argv[0]+'/')
+jvm = AdminConfig.list('JavaVirtualMachine', server)
+
+
+
+error=0
+maximumHeapSize = AdminConfig.showAttribute(jvm, 'maximumHeapSize')
+print 'maximumHeapSize: ' + maximumHeapSize
+if int(minimumSize) > int(maximumHeapSize):
+   error=1
+   print "Maximum Heap Size is too small " + maximumHeapSize;
+
+if int(maximumSize) < int(maximumHeapSize):
+   error=1
+   print "Maximum Heap Size is too large " + maximumHeapSize;
+
+sys.exit(error);
+

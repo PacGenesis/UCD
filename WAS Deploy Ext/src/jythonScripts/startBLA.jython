@@ -1,0 +1,9 @@
+import sys
+
+name = sys.argv[0]
+blaId = "WebSphere:blaname=" + name
+if (len(sys.argv) > 1) :
+    blaId = blaId + ",blaedition=" + sys.argv[1]
+
+AdminTask.startBLA('[ -blaID "' + blaId + '" ]');
+AdminConfig.save();
