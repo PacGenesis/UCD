@@ -1,6 +1,0 @@
-import sys
-
-clusterName = sys.argv[0]
-parameters = "[-clusterConfig [-clusterName '${clusterName}' -preferLocal true]]"
-AdminTask.createCluster(parameters.replace("${clusterName}", clusterName));
-AdminConfig.save();

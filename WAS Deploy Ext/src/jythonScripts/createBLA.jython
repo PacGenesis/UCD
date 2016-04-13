@@ -1,7 +1,0 @@
-import sys
-
-name = sys.argv[0]
-description = sys.argv[1]
-
-AdminTask.createEmptyBLA('[ -name "' + name + '" -description "' + description + '" ]');
-AdminConfig.save();

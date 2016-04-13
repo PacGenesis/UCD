@@ -1,5 +1,0 @@
-import sys
-
-file = sys.argv[0]
-AdminTask.addLocalRepositoryBundle('[ -file "' + file + '" ]');
-AdminConfig.save();

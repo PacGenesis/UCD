@@ -1,6 +1,0 @@
-import sys
-
-name = sys.argv[0]
-
-AdminTask.deleteBLA('[ -blaID "' + name + '" ]');
-AdminConfig.save();

@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.*;
-import com.urbancode.air.plugin.websphere.WebSphereBatchScriptHelper
 
 final def isWindows = (System.getProperty('os.name') =~ /(?i)windows/).find()
 out = System.out;
@@ -56,5 +55,3 @@ else {
 
 
 
-WebSphereBatchScriptHelper helper = new WebSphereBatchScriptHelper(props);
-helper.execute(command);

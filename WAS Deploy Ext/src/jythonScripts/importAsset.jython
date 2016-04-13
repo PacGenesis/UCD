@@ -1,7 +1,0 @@
-import sys
-
-file = sys.argv[0]
-storageType = sys.argv[1]
-
-AdminTask.importAsset('[ -source "' + file + '" -storageType "' + storageType + '" ]');
-AdminConfig.save();

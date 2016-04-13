@@ -1,6 +1,0 @@
-import sys
-
-name = sys.argv[0];
-version = sys.argv[1];
-AdminTask.removeLocalRepositoryBundle('[ -symbolicName "' + name + '" -version "' + version + '" ]');
-AdminConfig.save();
