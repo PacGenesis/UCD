@@ -59,7 +59,10 @@ public class ResourceClientExt extends ResourceClient {
 			} catch (JSONException j) {}
 			if (role == null || !type.equals("COMPONENT") ) continue;
 			if (deployableName.equals(name) && path.contains(agent)) {
-				filtered.put(res);
+				Boolean active = res.getBoolean("active");
+				if (active) {
+					filtered.put(res);
+				}
 			}
 		}
 		String targets[] = new String[filtered.length()];

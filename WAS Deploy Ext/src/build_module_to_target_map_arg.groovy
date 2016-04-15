@@ -7,7 +7,6 @@ import com.urbancode.air.XTrustProvider;
 XTrustProvider.install()
 final def isWindows = (System.getProperty('os.name') =~ /(?i)windows/).find()
 out = System.out;
-def wsadmin = isWindows ? "wsadmin.bat" : "wsadmin.sh"
 
 final def workDir = new File('.').canonicalFile
 def apTool = new AirPluginTool(this.args[0], this.args[1]);
