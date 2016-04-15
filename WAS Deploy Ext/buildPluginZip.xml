@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_deploy_zip" name="Create Runnable Jar for Project com.ibm.db.gcm">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+	<property file="build.properties" />
+    <!--ANT 1.7 is required                                        -->
+	<target name="create_deploy_zip">
+		 <delete file="${prod.build.dir}/WAS_Deploy_Ext_1.zip"/>
+		<tstamp>
+		    <format property="date.build_id" pattern="yyMMddHHmm" />
+		</tstamp>
+			<!--
+		<copy file="plugin.txt" tofile="plugin.xml"/>
+		<replace file="./plugin.xml" token="@@@@" value="${date.build_id}"/>
+		-->
+		<zip destFile="${prod.build.dir}/WAS_Deploy_Ext_1.zip">
+			<fileset dir="./">
+    			<include name="*.xml"/>
+    			<include name="**/*.class"/>
+				<include name="**/*.jar"/>
+			</fileset>
+			<fileset dir="./src">
+				<include name="**/*.groovy"/>
+			</fileset>
+ 
+		</zip>
+	</target>
+</project>
