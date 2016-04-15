@@ -33,6 +33,11 @@ def client = new ResourceClientExt(aURI, user, password);
 def targets = client.getTargetsForComponent(env,app,appName,agent);
 def reader = new StringReader(moduleURIList);
 reader.each { line ->
+	if (line.endsWith(".jar")) {
+		line = line + " " + line + ",META-INF/ejb-jar.xml"
+	} else if (line.endsWith(".war")) {
+		line = line.substring(0, line.indexOf(".")) + " " + line + ",WEB-INF/web.xml"
+	}
 	builder.append("[").append(line).append(" ")
 	for (int i = 0; i < targets.length; i++) {
 		builder.append(targets[i])
