@@ -25,12 +25,13 @@ def appName = props['appName']
 def agent = props['agent']
 def app = props['app']
 def env = props['env']
+def filterTag = props['filterTag']
 def moduleMappingPropery = props['moduleMappingPropery']
 StringBuilder builder = new StringBuilder();
 builder.append("-MapModulesToServers [")
 def aURI = new URI(weburl);
 def client = new ResourceClientExt(aURI, user, password);
-def targets = client.getTargetsForComponent(env,app,appName,agent);
+def targets = client.getTargetsForComponent(env,app,appName,agent,filterTag);
 def reader = new StringReader(moduleURIList);
 reader.each { line ->
 	if (line.endsWith(".jar")) {

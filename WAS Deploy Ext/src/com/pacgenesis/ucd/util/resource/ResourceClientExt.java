@@ -42,7 +42,8 @@ public class ResourceClientExt extends ResourceClient {
 		return result;
 	}
 	
-	public String[] getTargetsForComponent(String environmentName, String applicationName, String deployableName, String agent)
+	public String[] getTargetsForComponent(String environmentName, 
+			String applicationName, String deployableName, String agent,String filterTag)
 			throws ClientProtocolException, IOException, JSONException {
 		JSONArray result = getEnvironmentResource(environmentName, applicationName);
 		JSONArray filtered = new JSONArray();
@@ -59,8 +60,11 @@ public class ResourceClientExt extends ResourceClient {
 			} catch (JSONException j) {}
 			if (role == null || !type.equals("COMPONENT") ) continue;
 			if (deployableName.equals(name) && path.contains(agent)) {
-				Boolean active = res.getBoolean("active");
-				if (active) {
+				if (filterTag != null && !filterTag.equals("")) {
+					if (hasTag(res,filterTag)) {
+						filtered.put(res);
+					}
+				} else {
 					filtered.put(res);
 				}
 			}
@@ -71,7 +75,24 @@ public class ResourceClientExt extends ResourceClient {
 		}
 		return targets;
 	}
-
+	private boolean hasTag(JSONObject res, String filter) {
+		Boolean retVal = false;
+		
+		JSONArray tags = null;
+		try {
+			tags = res.getJSONArray("tags");
+		} catch (JSONException e) {}
+		if (tags != null) {
+			for (int i = 0; i < tags.length(); i++) {
+				try {
+					JSONObject tag = tags.getJSONObject(i);
+					String name = tag.getString("name");
+					if (name.equals(filter)) return true;
+				} catch (JSONException e) {}
+			}
+		}
+		return retVal;
+	}
 	private String getTarget(JSONObject jsonObject)  {
 		
 		String result = "";
@@ -214,18 +235,4 @@ public class ResourceClientExt extends ResourceClient {
 		}
 	}
 	
-	static public void main(String[] args) {
-		URI uri;
-		try {
-			uri = new URI("http://localhost:8060");
-			ResourceClientExt client = new ResourceClientExt(uri, "admin", "admin");
-			String[] targets = client.getTargetsForComponent("DEV1", "zions-bankcorp-pwr-common", "application", "wasAppSrv03agent");
-			for (String out: targets) {
-				System.out.println(out);
-			}
-		} catch (URISyntaxException | IOException | JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }
