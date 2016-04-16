@@ -117,7 +117,7 @@ public class ResourceClientExt extends ResourceClient {
 						result = "node=" + parent.getString("name") + "," + result;
 						
 					} else if (name.equals("WebSphereCluster")) {
-						result = "cluster=" + parent.getString("name") + "," + result;
+						result = "cluster=" + parent.getString("name") + result;
 						
 					} else if (name.equals("WebSphereCell")) {
 						result = "cell=" + parent.getString("name") + "," + result;
@@ -129,9 +129,16 @@ public class ResourceClientExt extends ResourceClient {
 					parent = null;
 					try {
 						parent = getResourceInfo(path);
-					} catch (JSONException | IOException x) {}
+					}  catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException x) {}
+					
 				}
-			} catch (JSONException | IOException e) {
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -169,7 +176,10 @@ public class ResourceClientExt extends ResourceClient {
 				cPath = cPath.replace("\\", "");
 				addTeamToResourceTree(team, cPath);
 			}
-		} catch (IOException | JSONException e) {
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
