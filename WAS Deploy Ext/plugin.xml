@@ -22,7 +22,7 @@ This plugin provides extensions to current WebSphere Application Server (WAS - D
         <server:property-ui type="textBox" label="UCD Environment" default-value="${p?:environment.name}" description="The name of the application." hidden="true"/>
       </property>
       <property name="appName" required="true">
-        <server:property-ui type="textBox" label="Component Resource Name" description="The name of the application component resource being installed (Used for WebSphere reference)."/>
+        <server:property-ui type="textBox" label="Component Resource Name" default-value="${p?:component.name}" description="The name of the application component resource being installed (Used for WebSphere reference)." hidden="true"/>
       </property>
       <property name="filterTag" required="false">
         <server:property-ui type="textBox" label="Filter Tag" description="Tag to use as resource filter."/>
