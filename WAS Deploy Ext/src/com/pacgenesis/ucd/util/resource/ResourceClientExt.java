@@ -75,6 +75,36 @@ public class ResourceClientExt extends ResourceClient {
 		}
 		return targets;
 	}
+	public JSONArray getRelatedResources(String environmentName, 
+			String applicationName, String deployableName, String agent,String filterTag)
+			throws ClientProtocolException, IOException, JSONException {
+		JSONArray result = getEnvironmentResource(environmentName, applicationName);
+		JSONArray filtered = new JSONArray();
+		for (int i = 0; i < result.length(); i++) {
+			JSONObject res = result.getJSONObject(i);
+			String name = res.getString("name");
+			String path =  res.getString("path");
+			JSONObject full = getResourceInfo(path);
+			JSONObject role = null;
+			String type = "";
+			try {
+				role = full.getJSONObject("role");
+				type = role.getString("specialType");
+			} catch (JSONException j) {}
+			if (role == null || !type.equals("COMPONENT") ) continue;
+			if (deployableName.equals(name) && path.contains(agent)) {
+				if (filterTag != null && !filterTag.equals("")) {
+					if (hasTag(res,filterTag)) {
+						filtered.put(res);
+					}
+				} else {
+					filtered.put(res);
+				}
+			}
+		}
+		return filtered;
+	}
+	
 	private boolean hasTag(JSONObject res, String filter) {
 		Boolean retVal = false;
 		
