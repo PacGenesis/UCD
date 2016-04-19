@@ -24,6 +24,18 @@ This plugin provides extensions to current WebSphere Application Server (WAS - D
       <property name="appName" required="true">
         <server:property-ui type="textBox" label="Component Resource Name" default-value="${p?:component.name}" description="The name of the application component resource being installed (Used for WebSphere reference)." hidden="true"/>
       </property>
+      <property name="resourceId" required="true">
+        <server:property-ui type="textBox" label="Resource ID" default-value="${p?:resource.id}" description="Resource ID" hidden="true"/>
+      </property>
+      <property name="componentId" required="true">
+        <server:property-ui type="textBox" label="Component ID" default-value="${p?:component.id}" description="Component ID" hidden="true"/>
+      </property>
+      <property name="versionId" required="true">
+        <server:property-ui type="textBox" label="Version ID" default-value="${p?:version.id}" description="version ID" hidden="true"/>
+      </property>
+      <property name="requestId" required="true">
+        <server:property-ui type="textBox" label="Request ID" default-value="${p?:request.id}" description="request ID" hidden="true"/>
+      </property>
       <property name="filterTag" required="false">
         <server:property-ui type="textBox" label="Filter Tag" description="Tag to use as resource filter."/>
       </property>

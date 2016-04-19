@@ -3,6 +3,7 @@ import java.io.*;
 import java.util.*;
 import com.urbancode.air.AirPluginTool
 import com.urbancode.air.XTrustProvider;
+import org.codehaus.jettison.json.*;
 
 XTrustProvider.install()
 final def isWindows = (System.getProperty('os.name') =~ /(?i)windows/).find()
@@ -25,13 +26,19 @@ def appName = props['appName']
 def agent = props['agent']
 def app = props['app']
 def env = props['env']
+def componentId = props['componentId']
+def versionId = props['versionId']
+def requestId = props['requestId']
+def mainResourceId = props['resourceId']
 def filterTag = props['filterTag']
 def moduleMappingPropery = props['moduleMappingPropery']
 StringBuilder builder = new StringBuilder();
 builder.append("-MapModulesToServers [")
 def aURI = new URI(weburl);
 def client = new ResourceClientExt(aURI, user, password);
+def re
 def targets = client.getTargetsForComponent(env,app,appName,agent,filterTag);
+def resources = client.getRelatedResources(env,app,appName,agent,filterTag);
 def reader = new StringReader(moduleURIList);
 reader.each { line ->
 	if (line.endsWith(".jar")) {
@@ -48,6 +55,12 @@ reader.each { line ->
 	builder.append("]")
 }
 builder.append("]")
+for (int i = 0; i < resources.length(); i++) {
+	JSONObject res = resources.getJSONObject(i);
+	String id = res.getString("id");
+	if (!mainResourceId.equals(id))
+		client.createResourceInventoryEntry(requestId, id, componentId, versionId,"Active");
+}
 System.out.println(builder.toString())
 apTool.setOutputProperty(moduleMappingPropery,builder.toString())
 apTool.storeOutputProperties()
