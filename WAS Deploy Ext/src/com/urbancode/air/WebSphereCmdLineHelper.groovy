@@ -108,6 +108,10 @@ public class WebSphereCmdLineHelper {
 		def outPrint = new ByteArrayOutputStream();
 		statusProc.waitForProcessOutput(outPrint, outPrint);
 		statusProc.waitFor();
+		def exitCode = statusProc.exitValue();
+		if (exitCode != 0) {
+			System.exit(exitCode);
+		}
 		return outPrint.toString();
     }
 }
