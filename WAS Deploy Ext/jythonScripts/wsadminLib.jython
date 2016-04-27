@@ -1,0 +1,11 @@
+def getModuleDisplayName(appName, modURI):
+    displayName = None;
+    moduleName = appName+"#"+modURI;
+    moduleName = moduleName.replace(",","+");
+    moduleInfo = AdminApp.view(moduleName, "[-MapModulesToServers]");
+    for outputLine in moduleInfo.splitlines():
+        if outputLine.find("Module:") != -1:
+            parts = outputLine.split(":");
+            displayName = parts[1].strip();
+
+    print displayName;

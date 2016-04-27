@@ -17,6 +17,7 @@
     			<include name="*.xml"/>
     			<include name="**/*.class"/>
 				<include name="**/*.jar"/>
+				<include name="**/*.jython"/>
 			</fileset>
 			<fileset dir="./src">
 				<include name="**/*.groovy"/>

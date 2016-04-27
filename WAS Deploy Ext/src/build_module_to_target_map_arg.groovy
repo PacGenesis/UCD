@@ -4,6 +4,7 @@ import java.util.*;
 import com.urbancode.air.AirPluginTool
 import com.urbancode.air.XTrustProvider;
 import org.codehaus.jettison.json.*;
+import com.pacgenesis.ucd.util.resource.*;
 
 XTrustProvider.install()
 final def isWindows = (System.getProperty('os.name') =~ /(?i)windows/).find()
@@ -39,12 +40,20 @@ def client = new ResourceClientExt(aURI, user, password);
 def re
 def targets = client.getTargetsForComponent(env,app,appName,agent,filterTag);
 def resources = client.getRelatedResources(env,app,appName,agent,filterTag);
+def getModuleHelper = new GetModuleDisplayNameHelper(props);
 def reader = new StringReader(moduleURIList);
 reader.each { line ->
 	if (line.endsWith(".jar")) {
-		line = line + " " + line + ",META-INF/ejb-jar.xml"
+		line = line + ",META-INF/ejb-jar.xml"
+		def dName = getModuleHelper.execute(line);
+		dName = dName.trim();
+		line = dName + " " + line;
 	} else if (line.endsWith(".war")) {
-		line = line.substring(0, line.indexOf(".")) + " " + line + ",WEB-INF/web.xml"
+		 
+		line = line + ",WEB-INF/web.xml"
+		def dName = getModuleHelper.execute(line);
+		dName = dName.trim();
+		line = dName + " " + line;
 	}
 	builder.append("[").append(line).append(" ")
 	for (int i = 0; i < targets.length; i++) {
