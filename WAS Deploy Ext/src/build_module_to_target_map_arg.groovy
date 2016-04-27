@@ -47,13 +47,21 @@ reader.each { line ->
 		line = line + ",META-INF/ejb-jar.xml"
 		def dName = getModuleHelper.execute(line);
 		dName = dName.trim();
-		line = dName + " " + line;
+		if (dName.contains(" ")) {
+			line = "\"" + dName + "\" " + line;
+		} else {
+			line = dName + " " + line;
+		}
 	} else if (line.endsWith(".war")) {
 		 
 		line = line + ",WEB-INF/web.xml"
 		def dName = getModuleHelper.execute(line);
 		dName = dName.trim();
-		line = dName + " " + line;
+		if (dName.contains(" ")) {
+			line = "\"" + dName + "\" " + line;
+		} else {
+			line = dName + " " + line;
+		}
 	}
 	builder.append("[").append(line).append(" ")
 	for (int i = 0; i < targets.length; i++) {
