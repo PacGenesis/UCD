@@ -12,6 +12,9 @@ This plugin provides extensions to current WebSphere Application Server (WAS - D
   <step-type name="BuildModuleToServerMap">
     <description>Map a target(server/cluster) to a list of modules of an Enterprise Application.</description>
     <properties>
+      <property name="cAppName" required="true">
+        <server:property-ui type="textBox" label="Application Name" default-value="" description="The name of the application component resource being installed (Used for WebSphere reference)."/>
+      </property>
       <property name="agent">
         <server:property-ui type="textBox" label="Agent Name" default-value="${p?:agent.name}" description="The name of the agent." hidden="true"/>
       </property>
@@ -44,6 +47,42 @@ This plugin provides extensions to current WebSphere Application Server (WAS - D
       </property>
       <property name="moduleMappingPropery" required="true">
         <server:property-ui type="textBox" label="Output Map Property" description="The output property name to set with Module Map argument."/>
+      </property>
+      <property name="scriptFile">
+        <server:property-ui type="textBox" label="Script File" description="Name of the script file to be created or appended to." default-value="${p:request.id}.py"/>
+      </property>
+      <property name="cell">
+        <server:property-ui type="textBox" label="Cell Name" default-value="${p?:resource/websphere.cell}" description="The name of the cell to be administered." hidden="true"/>
+      </property>
+      <property name="node">
+        <server:property-ui type="textBox" label="Node Name" default-value="${p?:resource/websphere.node}" description="The name of the node to be administered." hidden="true"/>
+      </property>
+      <property name="server">
+        <server:property-ui type="textBox" label="Server Name" default-value="${p?:resource/websphere.server}" description="The name of the server to be administered." hidden="true"/>
+      </property>
+      <property name="cluster">
+        <server:property-ui type="textBox" label="Cluster Name" default-value="${p?:resource/websphere.cluster}" description="The name of the cluster to be administered." hidden="true"/>
+      </property>
+      <property name="commandPath">
+        <server:property-ui type="textBox" label="Command Path" default-value="${p?:resource/websphere.commandPath}" description="The directory location of the wsadmin command-line executable: e.g., /opt/IBM/WebSphere/AppServer/bin/." hidden="true"/>
+      </property>
+      <property name="user">
+        <server:property-ui type="textBox" label="User Name" default-value="${p?:resource/websphere.user}" description="The user name to be used to connect to the WebSphere Node." hidden="true"/>
+      </property>
+      <property name="password">
+        <server:property-ui type="secureBox" label="Password" default-value="${p?:resource/websphere.password}" description="The password to be used to connect to the WebSphere Node." hidden="true"/>
+      </property>
+      <property name="host">
+        <server:property-ui type="textBox" default-value="${p?:resource/websphere.host}" label="Host" description="Hostname of the server to connect to." hidden="true"/>
+      </property>
+      <property name="port">
+        <server:property-ui type="textBox" default-value="${p?:resource/websphere.port}" label="Port" description="The port to connect to." hidden="true"/>
+      </property>
+      <property name="connType" required="true">
+        <server:property-ui type="selectBox" label="Connection Type" default-value="${p?:resource/websphere.connType}" description="The type of connection to use with wsadmin." hidden="true"/>
+        <value label="SOAP">SOAP</value>
+        <value label="RMI">RMI</value>
+        <value label="NONE">NONE</value>
       </property>
      </properties>
     <post-processing><![CDATA[
