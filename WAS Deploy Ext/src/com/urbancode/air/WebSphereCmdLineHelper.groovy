@@ -110,6 +110,7 @@ public class WebSphereCmdLineHelper {
 		statusProc.waitFor();
 		def exitCode = statusProc.exitValue();
 		if (exitCode != 0) {
+			System.out.println(outPrint.toString());
 			System.exit(exitCode);
 		}
 		return outPrint.toString();
