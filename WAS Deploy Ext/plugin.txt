@@ -2,7 +2,7 @@
         xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.pacgenesis.was.ext.plugin.WebSphere" version="2" name="WAS - Deploy - Ext"/>
+    <identifier id="com.pacgenesis.was.ext.plugin.WebSphere" version="@@@@" name="WAS - Deploy - Ext"/>
     <description>
 This plugin provides extensions to current WebSphere Application Server (WAS - Deploy - Ext) plugin
     </description>
