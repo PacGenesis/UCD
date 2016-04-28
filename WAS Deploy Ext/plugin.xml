@@ -46,7 +46,7 @@ This plugin provides extensions to current WebSphere Application Server (WAS - D
         <server:property-ui type="textAreaBox" label="Module Names" description="The URIs for the modules. e.g. PlantsByWebSphere.war,WEB-INF/web.xml"/>
       </property>
       <property name="moduleMappingPropery" required="true">
-        <server:property-ui type="textBox" label="Output Map Property" description="The output property name to set with Module Map argument."/>
+        <server:property-ui type="textBox" label="Output Map Property" default-value="map.argument" description="The output property name to set with Module Map argument." hidden="true"/>
       </property>
       <property name="scriptFile">
         <server:property-ui type="textBox" label="Script File" description="Name of the script file to be created or appended to." default-value="${p:request.id}.py"/>
