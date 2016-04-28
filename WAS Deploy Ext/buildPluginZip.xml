@@ -9,10 +9,10 @@
 		</tstamp>
 			<!--
 		<copy file="plugin.txt" tofile="plugin.xml"/>
-		-->
-		<delete file="${prod.build.dir}/WAS_Deploy_Ext_${new.build.id}.zip"/>
 		<copy overwrite="true" file="plugin.txt" tofile="plugin.xml"/>
 		<replace file="./plugin.xml" token="@@@@" value="${new.build.id}"/>
+		-->
+		<delete file="${prod.build.dir}/WAS_Deploy_Ext_${new.build.id}.zip"/>
 		<zip destFile="${prod.build.dir}/WAS_Deploy_Ext_${new.build.id}.zip">
 			<fileset dir="./">
     			<include name="*.xml"/>
