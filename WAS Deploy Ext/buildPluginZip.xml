@@ -12,6 +12,8 @@
 		<copy overwrite="true" file="plugin.txt" tofile="plugin.xml"/>
 		<replace file="./plugin.xml" token="@@@@" value="${new.build.id}"/>
 		-->
+		<copy overwrite="true" file="info.txt" tofile="info.xml"/>
+		<replace file="./info.xml" token="@@@@" value="${date.build_id}"/>
 		<delete file="${prod.build.dir}/WAS_Deploy_Ext_${new.build.id}.zip"/>
 		<zip destFile="${prod.build.dir}/WAS_Deploy_Ext_${new.build.id}.zip">
 			<fileset dir="./">
