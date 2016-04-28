@@ -4,15 +4,16 @@
 	<property file="build.properties" />
     <!--ANT 1.7 is required                                        -->
 	<target name="create_deploy_zip">
-		 <delete file="${prod.build.dir}/WAS_Deploy_Ext_1.zip"/>
 		<tstamp>
 		    <format property="date.build_id" pattern="yyMMddHHmm" />
 		</tstamp>
 			<!--
 		<copy file="plugin.txt" tofile="plugin.xml"/>
-		<replace file="./plugin.xml" token="@@@@" value="${date.build_id}"/>
+		<copy overwrite="true" file="plugin.txt" tofile="plugin.xml"/>
+		<replace file="./plugin.xml" token="@@@@" value="${new.build.id}"/>
 		-->
-		<zip destFile="${prod.build.dir}/WAS_Deploy_Ext_1.zip">
+		<delete file="${prod.build.dir}/WAS_Deploy_Ext_${new.build.id}.zip"/>
+		<zip destFile="${prod.build.dir}/WAS_Deploy_Ext_${new.build.id}.zip">
 			<fileset dir="./">
     			<include name="*.xml"/>
     			<include name="**/*.class"/>
