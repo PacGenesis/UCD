@@ -132,6 +132,7 @@ public class ResourceClientExt extends ResourceClient {
 				path = path.replace("\\", "");
 				path = path.substring(0, path.lastIndexOf("/"));
 				JSONObject parent = getResourceInfo(path);
+				int l = 0;
 				while (parent != null) {
 					String id = parent.getString("id");
 					JSONObject role = null;
@@ -139,19 +140,28 @@ public class ResourceClientExt extends ResourceClient {
 						role = parent.getJSONObject("role");
 					} catch (JSONException k){}
 					String name = "";
+					String value = "";
 					if (role!=null)
 						name = role.getString("name");
 					if (name.equals("WebSphereServer")) {
-						result = "server=" + parent.getString("name") + result;
+						value = "server=" + parent.getString("name");
 					} else if (name.equals("WebSphereNode")) {
-						result = "node=" + parent.getString("name") + "," + result;
+						value = "node=" + parent.getString("name");
 						
 					} else if (name.equals("WebSphereCluster")) {
-						result = "cluster=" + parent.getString("name") + result;
+						value = "cluster=" + parent.getString("name");
 						
 					} else if (name.equals("WebSphereCell")) {
-						result = "cell=" + parent.getString("name") + "," + result;
+						value = "cell=" + parent.getString("name");
 						
+					}
+					if (!value.equals("") && l == 0) {
+						result = value + result;
+						l++;
+					} else if (!value.equals(""))
+					{
+						result = value + "," + result;
+						l++;
 					}
 					path = parent.getString("path");
 					path = path.replace("\\", "");
