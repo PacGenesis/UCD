@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import groovy.json.*;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -23,10 +24,10 @@ public class ResourceClientExt extends ResourceClient {
 		// TODO Auto-generated constructor stub
 	}
 
-	public JSONArray getEnvironmentResource(String environmentName, String applicationName)
+	public def getEnvironmentResource(String environmentName, String applicationName)
 			throws ClientProtocolException, IOException, JSONException {
-		String uri = this.url + "/cli/environment/getBaseResources?environment=" + encodePath(environmentName);
-		JSONArray result = null;
+		String uri = this.url.toString() + "/cli/environment/getBaseResources?environment=" + encodePath(environmentName);
+		def result = null;
 		if ((applicationName != null) && (!("".equals(applicationName)))) {
 			uri = uri + "&application=" + encodePath(applicationName);
 		}
@@ -35,7 +36,7 @@ public class ResourceClientExt extends ResourceClient {
 		try {
 			HttpResponse response = invokeMethod(method);
 			String body = getBody(response);
-			result = new JSONArray(body);
+			result = new JsonSlurper().parseText(body);
 		} finally {
 			releaseConnection(method);
 		}
@@ -45,114 +46,91 @@ public class ResourceClientExt extends ResourceClient {
 	public String[] getTargetsForComponent(String environmentName, 
 			String applicationName, String deployableName, String agent,String filterTag)
 			throws ClientProtocolException, IOException, JSONException {
-		JSONArray result = getEnvironmentResource(environmentName, applicationName);
-		JSONArray filtered = new JSONArray();
-		for (int i = 0; i < result.length(); i++) {
-			JSONObject res = result.getJSONObject(i);
-			String name = res.getString("name");
-			String path =  res.getString("path");
-			JSONObject full = getResourceInfo(path);
-			JSONObject role = null;
-			String type = "";
-			try {
-				role = full.getJSONObject("role");
-				type = role.getString("specialType");
-			} catch (JSONException j) {}
-			if (role == null || !type.equals("COMPONENT") ) continue;
-			if (deployableName.equals(name) && path.contains(agent)) {
-				if (filterTag != null && !filterTag.equals("")) {
-					if (hasTag(res,filterTag)) {
-						filtered.put(res);
-					}
-				} else {
-					filtered.put(res);
-				}
-			}
+				
+		def filtered = getRelatedResources(environmentName, applicationName, deployableName, agent, filterTag);
+		ArrayList<String> targets= new ArrayList<String>();
+		filtered.each { target ->
+			targets.add(getTarget(target));
 		}
-		String targets[] = new String[filtered.length()];
-		for (int j = 0; j < filtered.length(); j++) {
-			targets[j] = getTarget(filtered.getJSONObject(j));
-		}
-		return targets;
+		return targets.toArray();
 	}
-	public JSONArray getRelatedResources(String environmentName, 
+			
+	public ArrayList<Object> getRelatedResources(String environmentName, 
 			String applicationName, String deployableName, String agent,String filterTag)
 			throws ClientProtocolException, IOException, JSONException {
-		JSONArray result = getEnvironmentResource(environmentName, applicationName);
-		JSONArray filtered = new JSONArray();
-		for (int i = 0; i < result.length(); i++) {
-			JSONObject res = result.getJSONObject(i);
-			String name = res.getString("name");
-			String path =  res.getString("path");
-			JSONObject full = getResourceInfo(path);
-			JSONObject role = null;
+		def result = getEnvironmentResource(environmentName, applicationName);
+		ArrayList<Object> filtered = new ArrayList<Object>();
+		result.each { res ->
+			String name = res.name;
+			String path =  res.path;
+			def full = getResourceInfo(path);
+			def role = null;
 			String type = "";
 			try {
-				role = full.getJSONObject("role");
-				type = role.getString("specialType");
-			} catch (JSONException j) {}
-			if (role == null || !type.equals("COMPONENT") ) continue;
-			if (deployableName.equals(name) && path.contains(agent)) {
-				if (filterTag != null && !filterTag.equals("")) {
-					if (hasTag(res,filterTag)) {
-						filtered.put(res);
+				role = full.role;
+				type = role.specialType;
+			} catch (Exception e) {}
+			if (role != null && type.equals("COMPONENT") ) {
+				if (deployableName.equals(name) && path.contains(agent)) {
+					if (filterTag != null && !filterTag.equals("")) {
+						if (hasTag(res,filterTag)) {
+							filtered.add(res);
+						}
+					} else {
+						filtered.add(res);
 					}
-				} else {
-					filtered.put(res);
 				}
 			}
 		}
 		return filtered;
 	}
 	
-	private boolean hasTag(JSONObject res, String filter) {
+	private boolean hasTag(def res, String filter) {
 		Boolean retVal = false;
 		
-		JSONArray tags = null;
+		def tags = null;
 		try {
-			tags = res.getJSONArray("tags");
-		} catch (JSONException e) {}
+			tags = res.tags;
+		} catch (Exception e){}
 		if (tags != null) {
-			for (int i = 0; i < tags.length(); i++) {
-				try {
-					JSONObject tag = tags.getJSONObject(i);
-					String name = tag.getString("name");
-					if (name.equals(filter)) return true;
-				} catch (JSONException e) {}
+			tags.each { tag ->
+				String name = tag.name;
+				if (name.equals(filter)) return true;
 			}
 		}
 		return retVal;
 	}
-	private String getTarget(JSONObject jsonObject)  {
+	
+	private String getTarget(def tData)  {
 		
 		String result = "";
 			String path;
 			try {
-				path = jsonObject.getString("path");
+				path = tData.path;
 				path = path.replace("\\", "");
 				path = path.substring(0, path.lastIndexOf("/"));
-				JSONObject parent = getResourceInfo(path);
+				def parent = getResourceInfo(path);
 				int l = 0;
 				while (parent != null) {
-					String id = parent.getString("id");
-					JSONObject role = null;
+					String id = parent.id;
+					def role = null;
 					try {
-						role = parent.getJSONObject("role");
-					} catch (JSONException k){}
+						role = parent.role;
+					} catch (Exception e) {}
 					String name = "";
 					String value = "";
 					if (role!=null)
-						name = role.getString("name");
+						name = role.name;
 					if (name.equals("WebSphereServer")) {
-						value = "server=" + parent.getString("name");
+						value = "server=" + parent.name;
 					} else if (name.equals("WebSphereNode")) {
-						value = "node=" + parent.getString("name");
+						value = "node=" + parent.name;
 						
 					} else if (name.equals("WebSphereCluster")) {
-						value = "cluster=" + parent.getString("name");
+						value = "cluster=" + parent.name;
 						
 					} else if (name.equals("WebSphereCell")) {
-						value = "cell=" + parent.getString("name");
+						value = "cell=" + parent.name;
 						
 					}
 					if (!value.equals("") && l == 0) {
@@ -163,38 +141,32 @@ public class ResourceClientExt extends ResourceClient {
 						result = value + "," + result;
 						l++;
 					}
-					path = parent.getString("path");
+					path = parent.path;
 					path = path.replace("\\", "");
 					path = path.substring(0, path.lastIndexOf("/"));
 					parent = null;
 					try {
 						parent = getResourceInfo(path);
-					}  catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					} catch (IOException x) {}
 					
 				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}  catch (IOException e) {
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		return "WebSphere:" + result;
 	}
 
-	public JSONObject getResourceInfo(String path) throws IOException, JSONException {
-		JSONObject result = null;
+	public def getResourceInfo(String path) throws IOException, JSONException {
+		def result = null;
 
-		String uri = this.url + "/cli/resource/info?resource=" + encodePath(path);
+		String uri = this.url.toString() + "/cli/resource/info?resource=" + encodePath(path);
 
 		HttpGet method = new HttpGet(uri);
 		try {
 			HttpResponse response = invokeMethod(method);
 			String body = getBody(response);
-			result = new JSONObject(body);
+			result = new JsonSlurper().parseText(body);
 		} finally {
 			releaseConnection(method);
 		}
@@ -226,7 +198,7 @@ public class ResourceClientExt extends ResourceClient {
 	}
 
 	public void addResourceToTeam(String resource, String team, String type) throws IOException {
-		String uri = this.url + "/cli/resource/teams?team=" + encodePath(team) + "&type=" + encodePath(type)
+		String uri = this.url.toString() + "/cli/resource/teams?team=" + encodePath(team) + "&type=" + encodePath(type)
 				+ "&resource=" + encodePath(resource);
 
 		HttpPut method = new HttpPut(uri);
@@ -238,7 +210,7 @@ public class ResourceClientExt extends ResourceClient {
 	}
 
 	public void deleteResourceFromTeam(String resource, String team, String type) throws IOException {
-		String uri = this.url + "/cli/resource/teams?team=" + encodePath(team) + "&type=" + encodePath(type)
+		String uri = this.url.toString() + "/cli/resource/teams?team=" + encodePath(team) + "&type=" + encodePath(type)
 				+ "&resource=" + encodePath(resource);
 		HttpDelete method = new HttpDelete(uri);
 		try {
@@ -254,7 +226,7 @@ public class ResourceClientExt extends ResourceClient {
 			throw new IOException("a required argument was not supplied");
 		}
 
-		String uri = this.url + "/cli/resource/setProperty?resource=" + encodePath(resourceName) + "&name="
+		String uri = this.url.toString() + "/cli/resource/setProperty?resource=" + encodePath(resourceName) + "&name="
 				+ encodePath(name) + "&value=" + encodePath(value) + "&isSecure="
 				+ encodePath(String.valueOf(isSecure));
 		String result = null;
@@ -274,7 +246,7 @@ public class ResourceClientExt extends ResourceClient {
 
 	public void updateResource(String resource, JSONObject data) throws IOException {
 
-		String uri = this.url + "/cli/resource/update?resource=" + encodePath(resource);
+		String uri = this.url.toString() + "/cli/resource/update?resource=" + encodePath(resource);
 
 		HttpPut method = new HttpPut(uri);
 		try {
