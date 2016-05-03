@@ -10,8 +10,8 @@
   or share their use case to help grow your plugin's functionality. 
   -->
   
-  <author name="IBM">
-    <organization>IBM</organization>
+  <author name="Eric Amundson">
+    <organization>PacGenesis</organization>
     <email>eamundson@pagenesis.com</email>
     <website>http://pagenesis.com</website>
     <bio/>
