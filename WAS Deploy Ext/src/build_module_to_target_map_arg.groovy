@@ -58,7 +58,7 @@ reader.each { line ->
 		def dName = getModuleHelper.execute(line);
 		dName = dName.trim();
 		if (dName.contains(" ")) {
-			line = "\"" + dName + "\" " + line;
+			line = "\'" + dName + "\' " + line;
 		} else {
 			line = dName + " " + line;
 		}
