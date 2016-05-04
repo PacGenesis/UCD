@@ -1,6 +1,4 @@
 import com.pacgenesis.ucd.util.resource.ResourceClientExt
-import java.io.*;
-import java.util.*;
 import com.urbancode.air.AirPluginTool
 import com.urbancode.air.XTrustProvider;
 import org.codehaus.jettison.json.*;
