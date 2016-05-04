@@ -24,6 +24,7 @@ public class ResourceClientExt extends ResourceClient {
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	public def getEnvironmentResource(String environmentName, String applicationName)
 			throws ClientProtocolException, IOException, JSONException {
 		String uri = this.url.toString() + "/cli/environment/getBaseResources?environment=" + encodePath(environmentName);
