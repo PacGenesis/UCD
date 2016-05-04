@@ -4,7 +4,7 @@
   <header>
     <identifier id="com.pacgenesis.was.ext.plugin.WebSphere" version="2" name="WAS - Deploy - Ext"/>
     <description>
-This plugin provides extensions to current WebSphere Application Server (WAS - Deploy - Ext) plugin
+This plugin provides extensions to current WebSphere Application Server (WAS - Deploy) plugin.
     </description>
     <tag>Application Server/Java/WebSphere/Deployment/Ext</tag>
     <server:required-server-version>6.1.1.2</server:required-server-version>

@@ -72,9 +72,8 @@ reader.each { line ->
 	builder.append("]")
 }
 builder.append("]")
-for (int i = 0; i < resources.length(); i++) {
-	JSONObject res = resources.getJSONObject(i);
-	String id = res.getString("id");
+resources.each { res ->
+	String id = res.id;
 	if (!mainResourceId.equals(id))
 		client.createResourceInventoryEntry(requestId, id, componentId, versionId,"Active");
 }
