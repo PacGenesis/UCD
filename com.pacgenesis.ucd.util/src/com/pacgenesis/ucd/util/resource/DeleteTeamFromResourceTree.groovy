@@ -76,13 +76,13 @@ public class DeleteTeamFromResourceTree {
 		}
 		ResourceClientExt deleter = new ResourceClientExt(uri, userid, password);
 		try {
-			JSONArray resources = deleter.getEnvironmentResource(env, application);
-			for (int i = 0; i < resources.length(); i++) {
-				String cPath = resources.getJSONObject(i).getString("path");
+			def resources = deleter.getEnvironmentResource(env, application);
+			resources.each { resource ->
+				String cPath = resource.path;
 				cPath = cPath.replace("\\", "");
 				deleter.deleteResourceFromTeam(cPath, team,null);
 			}
-		} catch (IOException | JSONException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

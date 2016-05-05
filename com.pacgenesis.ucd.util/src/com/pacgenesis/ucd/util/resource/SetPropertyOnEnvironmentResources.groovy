@@ -80,13 +80,13 @@ public class SetPropertyOnEnvironmentResources {
 		}
 		ResourceClientExt adder = new ResourceClientExt(uri, userid, password);
 		try {
-			JSONArray resources = adder.getEnvironmentResource(env, application);
-			for (int i = 0; i < resources.length(); i++) {
-				String cPath = resources.getJSONObject(i).getString("path");
+			def resources = adder.getEnvironmentResource(env, application);
+			resources.each { resource ->
+				String cPath = resource.path;
 				cPath = cPath.replace("\\", "");
 				adder.setResourceProperty(cPath, propertyName,propertyValue,false);
 			}
-		} catch (IOException | JSONException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -2,6 +2,7 @@ package com.pacgenesis.ucd.util.resource;
 
 import java.io.IOException;
 import java.net.URI;
+import groovy.json.*;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -21,10 +22,10 @@ public class ResourceClientExt extends ResourceClient {
 		// TODO Auto-generated constructor stub
 	}
 
-	public JSONArray getEnvironmentResource(String environmentName, String applicationName)
+	public def getEnvironmentResource(String environmentName, String applicationName)
 			throws ClientProtocolException, IOException, JSONException {
-		String uri = this.url + "/cli/environment/getBaseResources?environment=" + encodePath(environmentName);
-		JSONArray result = null;
+		String uri = this.url.toString() + "/cli/environment/getBaseResources?environment=" + encodePath(environmentName);
+		def result = null;
 		if ((applicationName != null) && (!("".equals(applicationName)))) {
 			uri = uri + "&application=" + encodePath(applicationName);
 		}
@@ -33,23 +34,23 @@ public class ResourceClientExt extends ResourceClient {
 		try {
 			HttpResponse response = invokeMethod(method);
 			String body = getBody(response);
-			result = new JSONArray(body);
+			result = new JsonSlurper().parseText(body);
 		} finally {
 			releaseConnection(method);
 		}
 		return result;
 	}
 
-	public JSONObject getResourceInfo(String path) throws IOException, JSONException {
-		JSONObject result = null;
+	public def getResourceInfo(String path) throws IOException, JSONException {
+		def result = null;
 
-		String uri = this.url + "/cli/resource/info?resource=" + encodePath(path);
+		String uri = this.url.toString() + "/cli/resource/info?resource=" + encodePath(path);
 
 		HttpGet method = new HttpGet(uri);
 		try {
 			HttpResponse response = invokeMethod(method);
 			String body = getBody(response);
-			result = new JSONObject(body);
+			result = new JsonSlurper().parseText(body);
 		} finally {
 			releaseConnection(method);
 		}
@@ -71,15 +72,18 @@ public class ResourceClientExt extends ResourceClient {
 				cPath = cPath.replace("\\", "");
 				addTeamToResourceTree(team, cPath);
 			}
-		} catch (IOException | JSONException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void addResourceToTeam(String resource, String team, String type) throws IOException {
-		String uri = this.url + "/cli/resource/teams?team=" + encodePath(team) + "&type=" + encodePath(type)
-				+ "&resource=" + encodePath(resource);
+		String startURL = this.url.toString();
+		String eTeam = encodePath(team);
+		String eResource = encodePath(resource);
+		String eType = encodePath(type);
+		String uri = "${startURL}/cli/resource/teams?team=${eTeam}&type=${eType}&resource=${eResource}";
 
 		HttpPut method = new HttpPut(uri);
 		try {
@@ -90,8 +94,11 @@ public class ResourceClientExt extends ResourceClient {
 	}
 
 	public void deleteResourceFromTeam(String resource, String team, String type) throws IOException {
-		String uri = this.url + "/cli/resource/teams?team=" + encodePath(team) + "&type=" + encodePath(type)
-				+ "&resource=" + encodePath(resource);
+		String startURL = this.url.toString();
+		String eTeam = encodePath(team);
+		String eResource = encodePath(resource);
+		String eType = encodePath(type);
+		String uri = "${startURL}/cli/resource/teams?team=${eTeam}&type=${eType}&resource=${eResource}";
 		HttpDelete method = new HttpDelete(uri);
 		try {
 			invokeMethod(method);
@@ -106,7 +113,7 @@ public class ResourceClientExt extends ResourceClient {
 			throw new IOException("a required argument was not supplied");
 		}
 
-		String uri = this.url + "/cli/resource/setProperty?resource=" + encodePath(resourceName) + "&name="
+		String uri = this.url.toString() + "/cli/resource/setProperty?resource=" + encodePath(resourceName) + "&name="
 				+ encodePath(name) + "&value=" + encodePath(value) + "&isSecure="
 				+ encodePath(String.valueOf(isSecure));
 		String result = null;
@@ -126,7 +133,7 @@ public class ResourceClientExt extends ResourceClient {
 
 	public void updateResource(String resource, JSONObject data) throws IOException {
 
-		String uri = this.url + "/cli/resource/update?resource=" + encodePath(resource);
+		String uri = this.url.toString() + "/cli/resource/update?resource=" + encodePath(resource);
 
 		HttpPut method = new HttpPut(uri);
 		try {

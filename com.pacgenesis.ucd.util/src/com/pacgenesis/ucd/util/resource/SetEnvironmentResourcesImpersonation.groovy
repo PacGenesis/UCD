@@ -77,10 +77,9 @@ public class SetEnvironmentResourcesImpersonation {
 		}
 		ResourceClientExt resClient = new ResourceClientExt(uri, userid, password);
 		try {
-			JSONArray resources = resClient.getEnvironmentResource(env, application);
-			for (int i = 0; i < resources.length(); i++) {
-				JSONObject res = resources.getJSONObject(i);
-				String cPath = res.getString("path");
+			def resources = resClient.getEnvironmentResource(env, application);
+			resources.each { resource ->
+				String cPath = res.path;
 				cPath = cPath.replace("\\", "");
 				JSONObject inRes = resClient.getResourceInfo(cPath);
 				inRes.put("useImpersonation", true);
@@ -89,7 +88,7 @@ public class SetEnvironmentResourcesImpersonation {
 				System.out.println(inRes);
 				resClient.updateResource(cPath, inRes);
 			}
-		} catch (IOException | JSONException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
