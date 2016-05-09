@@ -2,6 +2,7 @@ package com.pacgenesis.ucd.util.agent;
 
 import java.io.IOException;
 import java.net.URI;
+import groovy.json.*;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -19,16 +20,44 @@ public class AgentClientExt extends AgentClient {
 		// TODO Auto-generated constructor stub
 	}
 	
-	JSONArray getAgents() {
-		JSONArray result = null;
+	def getAgentInfo(String id) {
+		String mainURI = this.url.toString();
+		String uri = "${mainURI}/cli/agentCLI/info?agent=${id}";
+		HttpGet method = new HttpGet(uri);
+		def result = null;
+		try
+		{
+			HttpResponse response = invokeMethod(method);
+			String body = getBody(response);
+			result = new JsonSlurper().parseText(body);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+		  releaseConnection(method);
+		}
 		
-		String uri = this.url + "/cli/agentCLI";
+		return result;
+
+	}
+	
+	def getAgents() {
+		ArrayList<Object> result = new ArrayList<Object>();
+		
+		String uri = this.url.toString() + "/cli/agentCLI";
 		HttpGet method = new HttpGet(uri);
 		try
 		{
 			HttpResponse response = invokeMethod(method);
 			String body = getBody(response);
-			result = new JSONArray(body);
+			result = new JsonSlurper().parseText(body);
 	    } catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -44,6 +73,10 @@ public class AgentClientExt extends AgentClient {
 		}
 		
 		return result;
+	}
+	
+	def getPools() {
+		
 	}
 
 }

@@ -112,10 +112,14 @@ public class ResourceClientExt extends ResourceClient {
 		if (("".equals(resourceName)) || ("".equals(name))) {
 			throw new IOException("a required argument was not supplied");
 		}
+		String startURL = this.url.toString();
+		String eResourceName = encodePath(resourceName);
+		String eName = encodePath(name);
+		String eValue = encodePath(value);
+		String eIsSecure = encodePath(isSecure);
 
-		String uri = this.url.toString() + "/cli/resource/setProperty?resource=" + encodePath(resourceName) + "&name="
-				+ encodePath(name) + "&value=" + encodePath(value) + "&isSecure="
-				+ encodePath(String.valueOf(isSecure));
+
+		String uri = "${startURL}/cli/resource/setProperty?resource=${eResourceName}&name=${eName}&value=${eValue}&isSecure=${eIsSecure}";
 		String result = null;
 		HttpPut method = new HttpPut(uri);
 		try {
