@@ -7,6 +7,7 @@ import groovy.json.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -47,17 +48,48 @@ public class AgentClientExt extends AgentClient {
 		return result;
 
 	}
-	
-	def getAgents() {
-		ArrayList<Object> result = new ArrayList<Object>();
+	String getAgentProperty(String id, String propName) {
+		String mainURI = this.url.toString();
+		String uri = "${mainURI}/cli/agentCLI/getProperty?agent=${id}&name=${propName}";
+		HttpGet method = new HttpGet(uri);
+		String result = null;
+		try
+		{
+			HttpResponse response = invokeMethod(method);
+			String body = getBody(response);
+			result = body;
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
+		finally {
+		  releaseConnection(method);
+		}
 		
+		return result;
+
+	}
+
+	def getAgents() {
+		ArrayList<Object> out = new ArrayList<Object>();
+		def agents = null;
 		String uri = this.url.toString() + "/cli/agentCLI";
 		HttpGet method = new HttpGet(uri);
 		try
 		{
 			HttpResponse response = invokeMethod(method);
 			String body = getBody(response);
-			result = new JsonSlurper().parseText(body);
+			agents = new JsonSlurper().parseText(body);
+			agents.each { agent ->
+				def agentInfo = getAgentInfo(agent.id);
+				out.add(agentInfo);
+			}
 	    } catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,11 +104,48 @@ public class AgentClientExt extends AgentClient {
 		  releaseConnection(method);
 		}
 		
-		return result;
+		return out;
 	}
 	
 	def getPools() {
+		String mainURI = this.url.toString();
+		String uri = "${mainURI}/cli/agentPool";
+		HttpGet method = new HttpGet(uri);
+		def result = null;
+		try
+		{
+			HttpResponse response = invokeMethod(method);
+			String body = getBody(response);
+			result = new JsonSlurper().parseText(body);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+		  releaseConnection(method);
+		}
 		
+		return result;
+
+	}
+	
+	void addAgentToAgentPool(String agentPool, String agent) {
+		String startURL = this.url.toString();
+		String uri = "${startURL}/cli/agentPool/addAgentToPool?pool=${agentPool}&agent=${agent}";
+
+		HttpPut method = new HttpPut(uri);
+		try {
+			invokeMethod(method);
+		} finally {
+			releaseConnection(method);
+		}
+
 	}
 
 }
