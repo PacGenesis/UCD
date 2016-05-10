@@ -50,6 +50,19 @@ public class AgentClientExt extends AgentClient {
 		return result;
 
 	}
+	public void restartAgent(String agent) throws IOException {
+		String startURL = this.url.toString();
+		String eAgent = encodePath(agent);
+		String uri = "${startURL}/cli/agentCLI/restart?agent=${eAgent}";
+
+		HttpPut method = new HttpPut(uri);
+		try {
+			invokeMethod(method);
+		} finally {
+			releaseConnection(method);
+		}
+	}
+
 	String getAgentProperty(String id, String propName) {
 		String mainURI = this.url.toString();
 		String eAgent = encodePath(id);
