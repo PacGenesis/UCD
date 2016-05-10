@@ -15,15 +15,17 @@ import org.codehaus.jettison.json.JSONObject;
 public class BuildAgentPoolMap {
 	
 	
-	private enum ZONE {RISCMETNET, RISCDMZ, RISCBASTION, SISCDMZ}
+	private enum ZONE {RISCMETNET, RISCDMZ, RISCBASTION, SISCDMZ, SISCBASTION}
 	private long riscdmza = ipToLong(InetAddresses.forString("172.24.128.1"));
 	private long riscdmzb = ipToLong(InetAddresses.forString("172.24.191.254"));
 	private long riscbastiona = ipToLong(InetAddresses.forString("172.24.192.1"));
 	private long riscbastionb = ipToLong(InetAddresses.forString("172.24.255.254"));
 	private long siscdmza = ipToLong(InetAddresses.forString("172.24.0.1"));
 	private long siscdmzb = ipToLong(InetAddresses.forString("172.24.63.254"));
+	private long siscbastiona = ipToLong(InetAddresses.forString("172.24.64.1"));
+	private long siscbastionb = ipToLong(InetAddresses.forString("172.24.127.254"));
 	private long metnet1a = ipToLong(InetAddresses.forString("10.9.0.0"));
-	private long metnet1b = ipToLong(InetAddresses.forString("10.218.0.0"));
+	private long metnet1b = ipToLong(InetAddresses.forString("10.218.255.254"));
 	private long metnet2a = ipToLong(InetAddresses.forString("10.10.0.0"));
 	private long metnet2b = ipToLong(InetAddresses.forString("10.90.0.0"));
 
@@ -66,6 +68,9 @@ public class BuildAgentPoolMap {
 					case ZONE.SISCDMZ:
 						client.addAgentToAgentPool("SISC-DMZ", agent.name);
 						break;
+					case ZONE.SISCBASTION:
+						client.addAgentToAgentPool("SISC-BASTION", agent.name);
+						break;
 					default:
 						break;
 					}
@@ -81,14 +86,17 @@ public class BuildAgentPoolMap {
 		if (ip == null) return null;
 		long agentIP = ipToLong(InetAddresses.forString(ip));
 		if (agentIP >= riscdmza && agentIP <= riscdmzb) {
-			return RISCDMZ;
+			return ZONE.RISCDMZ;
 		} else if (agentIP >= riscbastiona && agentIP <= riscbastionb) {
-			return RISCBASTION;
+			return ZONE.RISCBASTION;
 		} else if (agentIP >= siscdmza && agentIP <= siscdmzb) {
-			return SISCDMZ;
+			return ZONE.SISCDMZ;
 		} else if (agentIP >= metnet1a && agentIP <= metnet1b) {
-			return RISCMETNET;
+			return ZONE.RISCMETNET;
+		} else if (agentIP >= siscbastiona && agentIP <= siscbastionb) {
+			return ZONE.SISCBASTION;
 		}
+		println "Not mapped to zone: ip = ${ip} for agent:  ${agent.name}";
 		return null;
 	}
 }

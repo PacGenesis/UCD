@@ -21,9 +21,11 @@ public class AgentClientExt extends AgentClient {
 		// TODO Auto-generated constructor stub
 	}
 	
+	
 	def getAgentInfo(String id) {
 		String mainURI = this.url.toString();
-		String uri = "${mainURI}/cli/agentCLI/info?agent=${id}";
+		String eId = encodePath(id);
+		String uri = "${mainURI}/cli/agentCLI/info?agent=${eId}";
 		HttpGet method = new HttpGet(uri);
 		def result = null;
 		try
@@ -50,7 +52,9 @@ public class AgentClientExt extends AgentClient {
 	}
 	String getAgentProperty(String id, String propName) {
 		String mainURI = this.url.toString();
-		String uri = "${mainURI}/cli/agentCLI/getProperty?agent=${id}&name=${propName}";
+		String eAgent = encodePath(id);
+		String ePropName = encodePath(propName);
+		String uri = "${mainURI}/cli/agentCLI/getProperty?agent=${eAgent}&name=${ePropName}";
 		HttpGet method = new HttpGet(uri);
 		String result = null;
 		try
@@ -86,10 +90,10 @@ public class AgentClientExt extends AgentClient {
 			HttpResponse response = invokeMethod(method);
 			String body = getBody(response);
 			agents = new JsonSlurper().parseText(body);
-			agents.each { agent ->
-				def agentInfo = getAgentInfo(agent.id);
-				out.add(agentInfo);
-			}
+//			agents.each { agent ->
+//				def agentInfo = getAgentInfo(agent.id);
+//				out.add(agentInfo);
+//			}
 	    } catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,7 +108,7 @@ public class AgentClientExt extends AgentClient {
 		  releaseConnection(method);
 		}
 		
-		return out;
+		return agents;
 	}
 	
 	def getPools() {
@@ -137,7 +141,9 @@ public class AgentClientExt extends AgentClient {
 	
 	void addAgentToAgentPool(String agentPool, String agent) {
 		String startURL = this.url.toString();
-		String uri = "${startURL}/cli/agentPool/addAgentToPool?pool=${agentPool}&agent=${agent}";
+		String ePool = encodePath(agentPool);
+		String eAgent = encodePath(agent);
+		String uri = "${startURL}/cli/agentPool/addAgentToPool?pool=${ePool}&agent=${eAgent}";
 
 		HttpPut method = new HttpPut(uri);
 		try {
