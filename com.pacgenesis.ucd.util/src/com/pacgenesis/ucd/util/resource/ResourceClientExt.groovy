@@ -19,7 +19,6 @@ public class ResourceClientExt extends ResourceClient {
 
 	public ResourceClientExt(URI url, String clientUser, String clientPassword) {
 		super(url, clientUser, clientPassword);
-		// TODO Auto-generated constructor stub
 	}
 
 	public def getEnvironmentResource(String environmentName, String applicationName)
@@ -57,6 +56,24 @@ public class ResourceClientExt extends ResourceClient {
 
 		return result;
 	}
+	
+	public def getResourceChildrenExt(String id) throws IOException {
+		def result = null;
+		String eUrl = this.url.toString();
+		String eId = encodePath(id);
+		String uri = "${eUrl}/cli/resource/?parent=${eId}";
+
+		try {
+			HttpGet method = new HttpGet(uri);
+			HttpResponse response = invokeMethod(method);
+			String body = getBody(response);
+			result = new JsonSlurper().parseText(body);
+		} finally {
+			releaseConnection(method);
+		}
+
+		return result;
+	}
 
 	void addTeamToResourceTree(String team, String parentResource) {
 		try {
@@ -66,9 +83,9 @@ public class ResourceClientExt extends ResourceClient {
 			e1.printStackTrace();
 		}
 		try {
-			JSONArray children = this.getResourceChildren(parentResource);
-			for (int i = 0; i < children.length(); i++) {
-				String cPath = children.getJSONObject(i).getString("path");
+			def children = this.getResourceChildrenExt(parentResource);
+			children.each { child -> 
+				String cPath = child.path;
 				cPath = cPath.replace("\\", "");
 				addTeamToResourceTree(team, cPath);
 			}
